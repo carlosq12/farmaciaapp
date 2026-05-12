@@ -31,13 +31,14 @@ body {
 
 .sidebar {
   width: 280px;
-  background: var(--bg-sidebar);
+  background: linear-gradient(180deg, #c2185b 0%, #880e4f 100%);
   height: 100vh;
   position: fixed;
-  padding: 2rem 1.5rem;
+  padding: 2.5rem 1.5rem;
   color: white;
   display: flex;
   flex-direction: column;
+  box-shadow: 4px 0 24px rgba(136, 14, 79, 0.4);
 }
 
 .main-content {
@@ -52,23 +53,78 @@ body {
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 0.8rem 1.2rem;
-  border-radius: 12px;
-  color: rgba(255, 255, 255, 0.7);
+  padding: 1rem 1.2rem;
+  border-radius: 16px;
+  color: rgba(255, 255, 255, 0.6);
   font-weight: 500;
-  margin-bottom: 0.25rem;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  border: 1px solid transparent;
 }
 
 .nav-item:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   color: white;
 }
 
 .nav-item.active {
-  background: rgba(0, 0, 0, 0.15);
+  background: linear-gradient(90deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%);
   color: white;
+  box-shadow: inset 2px 0 0 0 white, 0 4px 12px rgba(0,0,0,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+}
+
+.profile-card {
+  margin-top: auto;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 20px;
+  padding: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1rem;
+}
+
+.profile-avatar {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #fce4ec 0%, #f48fb1 100%);
+  color: #880e4f;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.logout-btn {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: white;
+  padding: 0.85rem;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.logout-btn:hover {
+  background: #ef4444;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  border-color: #ef4444;
 }
 
 /* Modal con Calidad Vercel */
@@ -170,4 +226,195 @@ button.secondary:hover {
 .list-item:hover {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
   border-color: #e2e8f0;
+}
+
+/* Print Styles & Labels */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print-area, .print-area * {
+    visibility: visible;
+  }
+  .print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+  .no-print {
+    display: none !important;
+  }
+  @page {
+    margin: 0;
+  }
+}
+
+.label-wrapper {
+  width: 80mm; /* Adjusted for common label printers, can be changed */
+  height: auto;
+  padding: 5mm;
+  background: white;
+  color: black;
+  border: 1px solid #ccc;
+  margin-bottom: 5mm;
+  font-family: Arial, sans-serif;
+  page-break-inside: avoid;
+}
+
+.label-header {
+  text-align: center;
+  font-size: 8pt;
+  font-weight: bold;
+  border-bottom: 1px solid black;
+  padding-bottom: 2mm;
+  margin-bottom: 2mm;
+}
+
+.label-med-name {
+  font-size: 14pt;
+  font-weight: 900;
+  text-align: center;
+  margin: 2mm 0;
+  text-transform: uppercase;
+}
+
+.label-unit {
+  font-size: 9pt;
+  text-align: center;
+  margin-bottom: 3mm;
+}
+
+.label-dosage {
+  font-size: 11pt;
+  font-weight: bold;
+  text-align: center;
+  border: 2px solid black;
+  padding: 1mm;
+  margin-bottom: 4mm;
+  text-transform: uppercase;
+}
+
+.label-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8pt;
+}
+
+.label-table td {
+  border: 1px solid black;
+  padding: 1mm 2mm;
+  vertical-align: top;
+}
+
+.label-table .label-cell-title {
+  font-weight: bold;
+  font-size: 7pt;
+  display: block;
+  margin-bottom: 0.5mm;
+}
+
+/* Suggestions Autocomplete */
+.suggestions-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1.5px solid #e2e8f0;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  z-index: 1001;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.suggestion-item {
+  padding: 0.75rem 1.2rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.suggestion-item:hover {
+  background: #fdf2f8;
+  color: var(--primary);
+}
+
+.suggestion-item .detail {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* React Datepicker Custom Styles */
+.react-datepicker-wrapper {
+  width: 100%;
+}
+.date-picker-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 0.95rem;
+  background-color: #f8fafc;
+  transition: all 0.2s ease;
+  outline: none;
+  color: #334155;
+}
+.date-picker-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(194, 24, 91, 0.1);
+  background-color: white;
+}
+.react-datepicker {
+  font-family: var(--font-outfit), sans-serif !important;
+  border: none !important;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+  overflow: hidden;
+  z-index: 1000 !important;
+}
+.react-datepicker-popper {
+  z-index: 1000 !important;
+}
+.react-datepicker__header {
+  background-color: #fdf2f8 !important;
+  border-bottom: none !important;
+  padding-top: 1rem !important;
+}
+.react-datepicker__current-month, 
+.react-datepicker-time__header, 
+.react-datepicker-year-header {
+  color: var(--primary) !important;
+}
+.react-datepicker__day--selected, 
+.react-datepicker__day--in-selecting-range, 
+.react-datepicker__day--in-range, 
+.react-datepicker__month-text--selected, 
+.react-datepicker__month-text--in-selecting-range, 
+.react-datepicker__month-text--in-range, 
+.react-datepicker__quarter-text--selected, 
+.react-datepicker__quarter-text--in-selecting-range, 
+.react-datepicker__quarter-text--in-range, 
+.react-datepicker__year-text--selected, 
+.react-datepicker__year-text--in-selecting-range, 
+.react-datepicker__year-text--in-range {
+  background-color: var(--primary) !important;
+  border-radius: 8px !important;
+  color: white !important;
+}
+.react-datepicker__day:hover {
+  border-radius: 8px !important;
+  background-color: #fce7f3 !important;
+}
+.react-datepicker__day--keyboard-selected {
+  background-color: #fce7f3 !important;
+  color: var(--primary) !important;
+  border-radius: 8px !important;
 }
