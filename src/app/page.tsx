@@ -21,10 +21,10 @@ interface Reintegro {
   fecha: any;
 }
 
-export default function Dashboard() {
+export default function InventoryPage() {
   const [reintegros, setReintegros] = useState<Reintegro[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
-    id: "",
     nombreMedicamento: "",
     cantidadCajas: "",
     cantidadComprimidos: "",
@@ -33,8 +33,9 @@ export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Escuchar cambios en Firestore en tiempo real
   useEffect(() => {
+    console.log("🔥 Conectado al proyecto:", db.app.options.projectId);
+    
     const q = query(collection(db, "reintegros"), orderBy("fecha", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const docs = snapshot.docs.map(doc => ({
@@ -52,143 +53,187 @@ export default function Dashboard() {
     r.id.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const generateAutoId = () => {
+    const randomNum = Math.floor(10000 + Math.random() * 90000);
+    return `MED-${randomNum}`;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.nombreMedicamento || !formData.id) return;
+    if (!formData.nombreMedicamento) return;
 
     setLoading(true);
     try {
+      const autoId = generateAutoId();
       await addDoc(collection(db, "reintegros"), {
         ...formData,
+        id: autoId,
         cantidadCajas: Number(formData.cantidadCajas),
         cantidadComprimidos: Number(formData.cantidadComprimidos),
         fecha: Timestamp.now()
       });
       
       setFormData({
-        id: "",
         nombreMedicamento: "",
         cantidadCajas: "",
         cantidadComprimidos: "",
         ingresadoPor: ""
       });
+      setIsModalOpen(false);
     } catch (error) {
       console.error("Error al guardar:", error);
-      alert("Error al conectar con Firebase. ¿Configuraste las credenciales?");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <main style={{ padding: "2rem", maxWidth: "1200px", margin: "0 auto" }}>
-      <header style={{ marginBottom: "3rem", textAlign: "center" }} className="animate-fade-in">
-        <h1 style={{ fontSize: "2.5rem", background: "linear-gradient(to right, #10b981, #06b6d4)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", marginBottom: "0.5rem" }}>
-          FARMACIA DE CUREPTO
-        </h1>
-        <p style={{ color: "var(--text-muted)", fontSize: "1.1rem" }}>Sistema de Inventario de Reintegro</p>
-      </header>
+    <div className="animate-fade-in">
+      {/* Header Area */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "3rem" }}>
+        <div>
+          <p style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--primary)", marginBottom: "0.5rem" }}>Hospital de Curepto</p>
+          <h2 style={{ fontSize: "2rem", fontWeight: 800 }}>Inventario</h2>
+          <p style={{ color: "var(--text-muted)" }}>Gestión centralizada de medicamentos y reintegros.</p>
+        </div>
+        <button className="primary" onClick={() => setIsModalOpen(true)}>
+          + Nuevo Producto
+        </button>
+      </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "2rem" }}>
-        {/* Formulario */}
-        <section className="glass-card animate-fade-in" style={{ padding: "2rem", height: "fit-content" }}>
-          <h2 style={{ marginBottom: "1.5rem", fontSize: "1.25rem", color: "var(--primary)" }}>Nuevo Registro</h2>
-          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-            <div>
-              <label style={{ display: "block", marginBottom: "0.5rem", fontSize: "0.875rem", color: "var(--text-muted)" }}>ID Medicamento</label>
-              <input 
-                type="text" 
-                placeholder="Ej: MED-001" 
-                value={formData.id}
-                onChange={(e) => setFormData({...formData, id: e.target.value})}
-                required
-              />
-            </div>
-            <div>
-              <label style={{ display: "block", marginBottom: "0.5rem", fontSize: "0.875rem", color: "var(--text-muted)" }}>Nombre Medicamento</label>
-              <input 
-                type="text" 
-                placeholder="Nombre completo" 
-                value={formData.nombreMedicamento}
-                onChange={(e) => setFormData({...formData, nombreMedicamento: e.target.value})}
-                required
-              />
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-              <div>
-                <label style={{ display: "block", marginBottom: "0.5rem", fontSize: "0.875rem", color: "var(--text-muted)" }}>Cant. Cajas</label>
-                <input 
-                  type="number" 
-                  placeholder="0" 
-                  value={formData.cantidadCajas}
-                  onChange={(e) => setFormData({...formData, cantidadCajas: e.target.value})}
-                />
-              </div>
-              <div>
-                <label style={{ display: "block", marginBottom: "0.5rem", fontSize: "0.875rem", color: "var(--text-muted)" }}>Cant. Comprimidos</label>
-                <input 
-                  type="number" 
-                  placeholder="0" 
-                  value={formData.cantidadComprimidos}
-                  onChange={(e) => setFormData({...formData, cantidadComprimidos: e.target.value})}
-                />
-              </div>
-            </div>
-            <div>
-              <label style={{ display: "block", marginBottom: "0.5rem", fontSize: "0.875rem", color: "var(--text-muted)" }}>Ingresado por</label>
-              <input 
-                type="text" 
-                placeholder="Tu nombre" 
-                value={formData.ingresadoPor}
-                onChange={(e) => setFormData({...formData, ingresadoPor: e.target.value})}
-              />
-            </div>
-            <button type="submit" className="primary" disabled={loading} style={{ marginTop: "1rem" }}>
-              {loading ? "Guardando..." : "Registrar Reintegro"}
-            </button>
-          </form>
-        </section>
-
-        {/* Lista */}
-        <section className="glass-card animate-fade-in" style={{ padding: "2rem", animationDelay: "0.2s" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
-            <h2 style={{ fontSize: "1.25rem", color: "var(--secondary)" }}>Registros Recientes</h2>
+      {/* Main Container */}
+      <div className="card" style={{ padding: "2.5rem", borderRadius: "24px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem" }}>
+          <h3 style={{ fontSize: "1.25rem", fontWeight: 700 }}>Listado General</h3>
+          <div style={{ position: "relative" }}>
             <input 
               type="text" 
-              placeholder="Buscar medicamento..." 
-              style={{ maxWidth: "250px", padding: "0.5rem 1rem" }}
+              placeholder="Buscar por nombre o ID..." 
+              style={{ minWidth: "320px", paddingLeft: "1rem" }}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            {filteredReintegros.length === 0 ? (
-              <p style={{ textAlign: "center", color: "var(--text-muted)", padding: "2rem" }}>
-                {searchTerm ? "No se encontraron resultados." : "No hay registros aún."}
-              </p>
-            ) : (
-              filteredReintegros.map((item) => (
-                <div key={item.docId} className="glass-card" style={{ padding: "1.25rem", display: "flex", justifyContent: "space-between", alignItems: "center", background: "rgba(255,255,255,0.02)" }}>
+        </div>
+
+        <div className="list-container">
+          {filteredReintegros.length === 0 ? (
+            <div style={{ textAlign: "center", padding: "4rem", color: "var(--text-muted)" }}>
+              <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>📦</div>
+              <p>No hay productos registrados en el inventario.</p>
+            </div>
+          ) : (
+            filteredReintegros.map((item) => (
+              <div key={item.docId} className="list-item">
+                <div style={{ display: "flex", gap: "1.25rem", alignItems: "center" }}>
+                  <div style={{ 
+                    width: "52px", 
+                    height: "52px", 
+                    borderRadius: "14px", 
+                    background: "#fdf2f8", 
+                    display: "flex", 
+                    alignItems: "center", 
+                    justifyContent: "center", 
+                    color: "var(--primary)", 
+                    fontSize: "1.25rem",
+                    fontWeight: 800,
+                    userSelect: "none",
+                    cursor: "default"
+                  }}>
+                    {item.nombreMedicamento.charAt(0).toUpperCase()}
+                  </div>
                   <div>
-                    <h3 style={{ fontSize: "1.1rem", marginBottom: "0.25rem" }}>{item.nombreMedicamento}</h3>
-                    <p style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-                      ID: {item.id} • Por: {item.ingresadoPor || "Anónimo"}
+                    <h4 style={{ fontSize: "1.1rem", fontWeight: 700 }}>{item.nombreMedicamento}</h4>
+                    <p style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
+                      <span style={{ fontWeight: 700, color: "var(--primary)" }}>{item.id}</span> • Por: {item.ingresadoPor || "Admin"}
                     </p>
                   </div>
-                  <div style={{ textAlign: "right" }}>
-                    <div style={{ fontSize: "1.25rem", fontWeight: "700", color: "var(--primary)" }}>
-                      {item.cantidadCajas} <span style={{ fontSize: "0.75rem", fontWeight: "400", color: "var(--text-muted)" }}>Cajas</span>
-                    </div>
-                    <div style={{ fontSize: "0.9rem", color: "var(--secondary)" }}>
-                      {item.cantidadComprimidos} <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Compr.</span>
-                    </div>
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <div style={{ color: "var(--primary)", fontWeight: 800, fontSize: "1.3rem" }}>
+                    {item.cantidadCajas} <span style={{ fontSize: "0.8rem", fontWeight: 500 }}>cajas</span>
+                  </div>
+                  <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", fontWeight: 600 }}>
+                    {item.cantidadComprimidos} comprimidos
                   </div>
                 </div>
-              ))
-            )}
-          </div>
-        </section>
+              </div>
+            ))
+          )}
+        </div>
       </div>
-    </main>
+
+      {/* Modal - Vercel Style */}
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content animate-fade-in">
+            <button 
+              style={{ position: "absolute", top: "1.5rem", right: "1.5rem", background: "none", border: "none", fontSize: "1.5rem", cursor: "pointer", color: "#94a3b8" }}
+              onClick={() => setIsModalOpen(false)}
+            >
+              &times;
+            </button>
+            
+            <div style={{ marginBottom: "2rem" }}>
+              <h3 style={{ fontSize: "1.5rem", fontWeight: 800, color: "#0f172a" }}>Nuevo Producto</h3>
+              <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>Ingresa los detalles para el registro de inventario.</p>
+            </div>
+            
+            <form onSubmit={handleSubmit}>
+              <div className="form-group" style={{ marginBottom: "1.5rem" }}>
+                <label>Nombre del Medicamento</label>
+                <input 
+                  type="text" 
+                  placeholder="Nombre genérico o comercial" 
+                  value={formData.nombreMedicamento}
+                  onChange={(e) => setFormData({...formData, nombreMedicamento: e.target.value})}
+                  required
+                />
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem", marginBottom: "1.5rem" }}>
+                <div className="form-group">
+                  <label>Stock Cajas</label>
+                  <input 
+                    type="number" 
+                    placeholder="0" 
+                    value={formData.cantidadCajas}
+                    onChange={(e) => setFormData({...formData, cantidadCajas: e.target.value})}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Total Comprimidos</label>
+                  <input 
+                    type="number" 
+                    placeholder="0" 
+                    value={formData.cantidadComprimidos}
+                    onChange={(e) => setFormData({...formData, cantidadComprimidos: e.target.value})}
+                  />
+                </div>
+              </div>
+
+              <div className="form-group" style={{ marginBottom: "2.5rem" }}>
+                <label>Funcionario Responsable</label>
+                <input 
+                  type="text" 
+                  placeholder="Nombre de quien registra" 
+                  value={formData.ingresadoPor}
+                  onChange={(e) => setFormData({...formData, ingresadoPor: e.target.value})}
+                />
+              </div>
+
+              <div style={{ display: "flex", gap: "1rem" }}>
+                <button type="button" className="secondary" style={{ flex: 1 }} onClick={() => setIsModalOpen(false)}>
+                  Cancelar
+                </button>
+                <button type="submit" className="primary" style={{ flex: 2 }} disabled={loading}>
+                  {loading ? "Registrando..." : "Guardar Producto"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
