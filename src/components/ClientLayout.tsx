@@ -58,21 +58,23 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     <div className="layout-container">
       {/* Sidebar */}
       <aside className="sidebar">
-        <div className="logo-container" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3rem' }}>
+        <div className="logo-container" style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '3.5rem' }}>
           <div style={{ 
-            width: "42px", 
-            height: "42px", 
-            backgroundColor: "white", 
-            borderRadius: "12px", 
+            width: "48px", 
+            height: "48px", 
+            background: "rgba(255, 255, 255, 0.15)", 
+            backdropFilter: "blur(10px)",
+            border: "1px solid rgba(255, 255, 255, 0.2)",
+            borderRadius: "14px", 
             display: "flex", 
             alignItems: "center", 
             justifyContent: "center",
             flexShrink: 0,
-            boxShadow: "0 4px 12px rgba(0,0,0,0.1)"
+            boxShadow: "0 8px 16px rgba(0,0,0,0.1)"
           }}>
-             <span style={{ color: "#c2185b", fontWeight: 900, fontSize: "24px" }}>F</span>
+             <span style={{ color: "white", fontWeight: 900, fontSize: "28px" }}>F</span>
           </div>
-          <span className="logo-text" style={{ fontSize: '1.2rem', fontWeight: 800, letterSpacing: '0.05em' }}>ARMACIA</span>
+          <span className="logo-text" style={{ fontSize: '1.4rem', fontWeight: 900, letterSpacing: '0.08em', color: "white" }}>FARMACIA</span>
         </div>
 
         <nav style={{ flex: 1, display: "flex", flexDirection: "column", gap: "0.5rem" }}>
@@ -107,9 +109,9 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 user.nombreCompleto.charAt(0).toUpperCase()
               )}
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-              <span style={{ fontWeight: 700, fontSize: "0.95rem", color: "white" }}>{user.nombreCompleto}</span>
-              <span style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.7)", letterSpacing: "0.05em", textTransform: "uppercase" }}>{user.rol}</span>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
+              <span style={{ fontWeight: 700, fontSize: "0.95rem", color: "white", textShadow: "0 2px 4px rgba(0,0,0,0.2)" }}>{user.nombreCompleto}</span>
+              <span style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.6)", letterSpacing: "0.08em", textTransform: "uppercase", fontWeight: 700 }}>{user.rol}</span>
             </div>
           </div>
           
