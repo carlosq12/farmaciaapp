@@ -507,7 +507,11 @@ export default function InventoryPage() {
                   fontWeight: 700,
                   fontSize: "0.85rem"
                 }}
-                onClick={() => setIsPrintingReport(true)}
+                onClick={() => {
+                  setIsPrinting(false);
+                  setIsPrintingReport(true);
+                  setTimeout(() => { window.print(); }, 800);
+                }}
               >
                 <span>🖨️</span> Imprimir Reporte
               </button>
@@ -854,6 +858,7 @@ export default function InventoryPage() {
                       });
                     }
 
+                    setIsPrintingReport(false);
                     setPrintSize("10x5");
                     setIsPrinting(true);
                     setTimeout(() => { window.print(); }, 800);
@@ -889,6 +894,7 @@ export default function InventoryPage() {
                       });
                     }
 
+                    setIsPrintingReport(false);
                     setPrintSize("5x3");
                     setIsPrinting(true);
                     setTimeout(() => { window.print(); }, 800);
