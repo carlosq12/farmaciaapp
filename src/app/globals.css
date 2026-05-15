@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
 :root {
   --primary: #d81b60; /* El rosa exacto de la imagen */
   --primary-hover: #ad1457;
@@ -19,7 +21,7 @@
 }
 
 body {
-  font-family: var(--font-outfit), sans-serif;
+  font-family: 'Outfit', sans-serif;
   background-color: var(--bg-main);
   color: var(--text-main);
   -webkit-font-smoothing: antialiased;

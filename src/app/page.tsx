@@ -34,9 +34,12 @@ interface Reintegro {
   etiquetaGuardada?: boolean;
   posologia?: string;
   comprimidosPorSobre?: string;
-  solicitudPendiente?: "restaurar" | "eliminar";
+  solicitudPendiente?: "restaurar" | "eliminar" | "imprimir" | "finalizar";
   fecha: any;
   correlativoInicial?: number;
+  correlativoPrefijo?: string;
+  autorizadoImprimir?: boolean;
+  fechaFinalizado?: any;
   proveedor?: string;
   fechaRegistro?: string;
 }
