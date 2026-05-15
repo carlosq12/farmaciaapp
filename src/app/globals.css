@@ -176,6 +176,7 @@ input {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   user-select: text;
   color: #1e293b;
+  text-transform: uppercase;
 }
 
 input:focus {
@@ -272,6 +273,30 @@ button.secondary:hover {
     margin: 0;
     size: auto;
   }
+}
+
+.report-print-area {
+  padding: 1.5cm;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10pt;
+}
+
+.report-table th, .report-table td {
+  border: 1px solid #000;
+  padding: 8px;
+  text-align: left;
+}
+
+.report-table th {
+  background-color: #f2f2f2 !important;
+  font-weight: bold;
 }
 
 .label-wrapper {

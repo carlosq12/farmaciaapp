@@ -36,7 +36,7 @@ export default function UsuariosPage() {
 
   // Redirigir si no es admin
   useEffect(() => {
-    if (user && user.rol !== "Administrador" && user.rol !== "Admin") {
+    if (user && !["administrador", "admin", "subrogante"].includes(user.rol.toLowerCase())) {
       router.push("/");
     }
   }, [user, router]);
@@ -65,6 +65,7 @@ export default function UsuariosPage() {
   }, []);
 
   const formatRut = (value: string) => {
+    if (value.toUpperCase() === "ADMIN") return "ADMIN";
     let clean = value.replace(/[^0-9kK]/g, "");
     if (clean.length > 9) clean = clean.slice(0, 9);
     
@@ -161,7 +162,7 @@ export default function UsuariosPage() {
     }
   };
 
-  if (!user || (user.rol !== "Administrador" && user.rol !== "Admin")) {
+  if (!user || !["administrador", "admin", "subrogante"].includes(user.rol.toLowerCase())) {
     return null; // Don't render anything while redirecting
   }
 
@@ -220,8 +221,8 @@ export default function UsuariosPage() {
                   <td style={{ padding: "1rem" }}>
                     <span style={{ 
                       padding: "4px 12px", 
-                      background: u.rol === "Administrador" || u.rol === "Admin" ? "#fdf2f8" : "#f1f5f9", 
-                      color: u.rol === "Administrador" || u.rol === "Admin" ? "var(--primary)" : "#64748b",
+                      background: ["Administrador", "Admin", "Subrogante"].includes(u.rol) ? "#fdf2f8" : "#f1f5f9", 
+                      color: ["Administrador", "Admin", "Subrogante"].includes(u.rol) ? "var(--primary)" : "#64748b",
                       borderRadius: "100px",
                       fontSize: "0.8rem",
                       fontWeight: 700
@@ -328,13 +329,38 @@ export default function UsuariosPage() {
                 </div>
                 <div className="form-group">
                   <label>Rol en el Sistema</label>
-                  <select 
-                    value={formData.rol}
-                    onChange={(e) => setFormData({...formData, rol: e.target.value})}
-                  >
-                    <option value="Funcionario">Funcionario</option>
-                    <option value="Administrador">Administrador</option>
-                  </select>
+                  <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.5rem" }}>
+                    {[
+                      { id: "Funcionario", icon: "👤" },
+                      { id: "Administrador", icon: "🛡️" },
+                      { id: "Subrogante", icon: "🔄" }
+                    ].map((role) => (
+                      <button
+                        key={role.id}
+                        type="button"
+                        onClick={() => setFormData({...formData, rol: role.id})}
+                        style={{
+                          flex: 1,
+                          padding: "0.6rem 0.4rem",
+                          borderRadius: "10px",
+                          border: formData.rol === role.id ? "2px solid var(--primary)" : "2px solid #f1f5f9",
+                          background: formData.rol === role.id ? "#fdf2f8" : "white",
+                          color: formData.rol === role.id ? "var(--primary)" : "#64748b",
+                          fontSize: "0.75rem",
+                          fontWeight: 700,
+                          cursor: "pointer",
+                          transition: "all 0.2s ease",
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          gap: "4px"
+                        }}
+                      >
+                        <span style={{ fontSize: "1.1rem" }}>{role.icon}</span>
+                        {role.id}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
 
