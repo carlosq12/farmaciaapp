@@ -1111,32 +1111,22 @@ export default function InventoryPage() {
               </div>
             ))
           ) : (
-            Array.from({ length: Math.ceil((Number(distributionForm.totalComprimidos) / (Number(distributionForm.comprimidosPorSobre) || 1)) / 2) }).map((_, stickerIndex) => {
-              const totalLabels = Math.ceil(Number(distributionForm.totalComprimidos) / (Number(distributionForm.comprimidosPorSobre) || 1));
-              return (
-                <div key={stickerIndex} className="label-wrapper size-10x5">
-                  {[0, 1].map((offset) => {
-                    const labelIndex = (stickerIndex * 2) + offset;
-                    if (labelIndex >= totalLabels) return <div key={offset} className="label-sub-content empty"></div>;
-                    return (
-                      <div key={offset} className="label-sub-content">
-                        <div className="label-header">HOSPITAL DE CUREPTO<br/>SERVICIO DE FARMACIA</div>
-                        <div className="label-med-name">{selectedProduct?.nombreMedicamento}</div>
-                        <div className="label-dosage">{distributionForm.posologia}</div>
-                        <div className="label-grid">
-                          <div className="label-grid-item"><span className="label-cell-title">VENC:</span><span className="label-cell-value">{distributionForm.vto}</span></div>
-                          <div className="label-grid-item"><span className="label-cell-title">SERIE:</span><span className="label-cell-value">{distributionForm.seri}</span></div>
-                          <div className="label-grid-item" style={{ gridColumn: "span 2", textAlign: "center" }}>
-                            <span className="label-cell-title">CORRELATIVO ÚNICO</span>
-                            <span className="label-cell-value" style={{ fontWeight: 900 }}>{selectedProduct?.correlativoPrefijo ? `${selectedProduct.correlativoPrefijo}-` : ""}{(selectedProduct?.correlativoInicial || 1) + labelIndex}</span>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
+            Array.from({ length: Math.ceil(Number(distributionForm.totalComprimidos) / (Number(distributionForm.comprimidosPorSobre) || 1)) }).map((_, index) => (
+              <div key={index} className="label-wrapper size-10x5">
+                <div className="label-header">HOSPITAL DE CUREPTO<br/>SERVICIO DE FARMACIA</div>
+                <div className="label-med-name">{selectedProduct?.nombreMedicamento}</div>
+                <div className="label-dosage">{distributionForm.posologia}</div>
+                <div className="label-total-count">Total: {distributionForm.comprimidosPorSobre} comp.</div>
+                <div className="label-grid">
+                  <div className="label-grid-item"><span className="label-cell-title">VENC:</span><span className="label-cell-value">{distributionForm.vto}</span></div>
+                  <div className="label-grid-item"><span className="label-cell-title">SERIE:</span><span className="label-cell-value">{distributionForm.seri}</span></div>
+                  <div className="label-grid-item" style={{ gridColumn: "span 2", textAlign: "center" }}>
+                    <span className="label-cell-title">CORRELATIVO ÚNICO</span>
+                    <span className="label-cell-value" style={{ fontWeight: 900 }}>{selectedProduct?.correlativoPrefijo ? `${selectedProduct.correlativoPrefijo}-` : ""}{(selectedProduct?.correlativoInicial || 1) + index}</span>
+                  </div>
                 </div>
-              );
-            })
+              </div>
+            ))
           )
         )}
       </div>
