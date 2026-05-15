@@ -1082,7 +1082,7 @@ export default function InventoryPage() {
                       <td>{item.proveedor || "-"}</td>
                       <td>{item.id}</td>
                       <td>{item.vto || "-"}</td>
-                      <td>{item.correlativoInicial ? `${item.correlativoPrefijo}-${item.correlativoInicial}` : "-"}</td>
+                      <td>{item.correlativoInicial ? `${item.correlativoPrefijo}-${item.correlativoInicial} al ${item.correlativoPrefijo}-${item.correlativoInicial + totalLabels - 1}` : "-"}</td>
                       <td>{item.ingresadoPor}</td>
                     </tr>
                   );
