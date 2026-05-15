@@ -96,7 +96,7 @@ export default function InventoryPage() {
   });
   const [isPrinting, setIsPrinting] = useState(false);
   const [isPrintingReport, setIsPrintingReport] = useState(false);
-  const [printSize, setPrintSize] = useState<"10x5" | "5x3">("5x3");
+  const [printSize, setPrintSize] = useState<"10x5" | "3x3">("3x3");
 
   // Custom Dialog State
   const [dialog, setDialog] = useState<{
@@ -895,12 +895,12 @@ export default function InventoryPage() {
                     }
 
                     setIsPrintingReport(false);
-                    setPrintSize("5x3");
+                    setPrintSize("3x3");
                     setIsPrinting(true);
                     setTimeout(() => { window.print(); }, 800);
                   }}
                 >
-                  🖨️ Pequeño (5x3cm)
+                  🖨️ Pequeño (3x3cm)
                 </button>
               </div>
 
@@ -922,7 +922,7 @@ export default function InventoryPage() {
                   }}>
                     {Array.from({ length: Math.ceil(Number(distributionForm.totalComprimidos) / (Number(distributionForm.comprimidosPorSobre) || 1)) }).map((_, index, array) => (
                       <div key={index} style={{ width: "75mm", height: "45mm", flexShrink: 0, position: "relative", boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)", borderRadius: "4px", overflow: "hidden" }}>
-                        <div className="label-wrapper size-5x3" style={{ transform: "scale(1.5)", transformOrigin: "top left", position: "absolute", top: 0, left: 0 }}>
+                        <div className="label-wrapper size-3x3" style={{ transform: "scale(1.5)", transformOrigin: "top left", position: "absolute", top: 0, left: 0 }}>
                           <div className="label-header">HOSPITAL DE CUREPTO<br/>SERVICIO DE FARMACIA</div>
                           <div className="label-med-name">{selectedProduct?.nombreMedicamento}</div>
                           <div className="label-unit">Comprimidos</div>
@@ -1093,9 +1093,9 @@ export default function InventoryPage() {
         )}
 
         {isPrinting && (
-          printSize === "5x3" ? (
+          printSize === "3x3" ? (
             Array.from({ length: Math.ceil(Number(distributionForm.totalComprimidos) / (Number(distributionForm.comprimidosPorSobre) || 1)) }).map((_, index, array) => (
-              <div key={index} className="label-wrapper size-5x3">
+              <div key={index} className="label-wrapper size-3x3">
                 <div className="label-header">HOSPITAL DE CUREPTO<br/>SERVICIO DE FARMACIA</div>
                 <div className="label-med-name">{selectedProduct?.nombreMedicamento}</div>
                 <div className="label-dosage">{distributionForm.posologia}</div>
