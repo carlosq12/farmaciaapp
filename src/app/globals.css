@@ -272,7 +272,7 @@ button.secondary:hover {
     display: none !important;
   }
   @page {
-    margin: 0;
+    margin: 0 !important;
     size: auto;
   }
 }
@@ -351,13 +351,13 @@ button.secondary:hover {
 .size-3x3 .label-cell-title { font-size: 3.5pt; }
 .size-3x3 .label-total-count { font-size: 4.5pt; margin: 0; line-height: 1; }
 
-.size-10x5 .label-header { font-size: 6.5pt; margin-bottom: 0.5mm; padding-bottom: 0.5mm; }
-.size-10x5 .label-med-name { font-size: 11pt; margin: 0.5mm 0; font-weight: 900; }
-.size-10x5 .label-unit { font-size: 7pt; margin-bottom: 0.5mm; }
-.size-10x5 .label-dosage { font-size: 8.5pt; border-width: 1px; padding: 0.5mm; margin-bottom: 1mm; }
-.size-10x5 .label-table { font-size: 7pt; }
-.size-10x5 .label-cell-title { font-size: 6pt; }
-.size-10x5 .label-total-count { font-size: 7.5pt; margin-bottom: 1mm; }
+.size-10x5 .label-header { font-size: 8pt; margin-bottom: 1mm; padding-bottom: 1mm; }
+.size-10x5 .label-med-name { font-size: 15pt; margin: 1mm 0; font-weight: 900; }
+.size-10x5 .label-unit { font-size: 9pt; margin-bottom: 1mm; }
+.size-10x5 .label-dosage { font-size: 12pt; border-width: 1.5px; padding: 1mm; margin-bottom: 1.5mm; }
+.size-10x5 .label-table { font-size: 9pt; }
+.size-10x5 .label-cell-title { font-size: 8pt; }
+.size-10x5 .label-total-count { font-size: 10pt; margin-bottom: 1.5mm; }
 
 .label-header {
   text-align: center;
@@ -439,9 +439,9 @@ button.secondary:hover {
 .size-3x3 .label-cell-title { font-size: 3pt; margin-right: 0.5mm; }
 .size-3x3 .label-cell-value { font-size: 3.5pt; line-height: 1; font-weight: normal; }
 
-.size-10x5 .label-grid-item { padding: 0.2mm 0.5mm; }
-.size-10x5 .label-cell-title { font-size: 5.5pt; }
-.size-10x5 .label-cell-value { font-size: 7pt; }
+.size-10x5 .label-grid-item { padding: 0.5mm 1mm; border-width: 0.3mm; }
+.size-10x5 .label-cell-title { font-size: 7pt; }
+.size-10x5 .label-cell-value { font-size: 9pt; }
 
 /* Suggestions Autocomplete */
 .suggestions-list {
