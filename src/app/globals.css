@@ -315,13 +315,23 @@ button.secondary:hover {
 .label-wrapper.size-10x5 {
   width: 100mm;
   height: 50mm;
-  padding: 3mm 5mm;
+  display: flex;
+  flex-direction: row;
+}
+
+.label-wrapper.size-10x5 .label-sub-content {
+  width: 50mm;
+  height: 50mm;
+  padding: 2mm;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-/* Estilos eliminados para sub-content en 10x5 completa */
+.label-wrapper.size-10x5 .label-sub-content:first-child {
+  border-right: 1px dashed #ccc;
+}
 
 .label-wrapper.size-3x3 {
   width: 30mm;
@@ -341,13 +351,13 @@ button.secondary:hover {
 .size-3x3 .label-cell-title { font-size: 3.5pt; }
 .size-3x3 .label-total-count { font-size: 4.5pt; margin: 0; line-height: 1; }
 
-.size-10x5 .label-header { font-size: 8pt; margin-bottom: 1mm; padding-bottom: 1mm; }
-.size-10x5 .label-med-name { font-size: 18pt; margin: 2mm 0; }
-.size-10x5 .label-unit { font-size: 10pt; margin-bottom: 1mm; }
-.size-10x5 .label-dosage { font-size: 14pt; border-width: 2px; padding: 2mm; margin-bottom: 2mm; }
-.size-10x5 .label-table { font-size: 9pt; }
-.size-10x5 .label-cell-title { font-size: 8pt; }
-.size-10x5 .label-total-count { font-size: 10pt; margin-bottom: 2mm; }
+.size-10x5 .label-header { font-size: 6.5pt; margin-bottom: 0.5mm; padding-bottom: 0.5mm; }
+.size-10x5 .label-med-name { font-size: 11pt; margin: 0.5mm 0; font-weight: 900; }
+.size-10x5 .label-unit { font-size: 7pt; margin-bottom: 0.5mm; }
+.size-10x5 .label-dosage { font-size: 8.5pt; border-width: 1px; padding: 0.5mm; margin-bottom: 1mm; }
+.size-10x5 .label-table { font-size: 7pt; }
+.size-10x5 .label-cell-title { font-size: 6pt; }
+.size-10x5 .label-total-count { font-size: 7.5pt; margin-bottom: 1mm; }
 
 .label-header {
   text-align: center;
