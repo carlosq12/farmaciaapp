@@ -273,7 +273,20 @@ button.secondary:hover {
   }
   @page {
     margin: 0 !important;
+  }
+  @page size10x5 {
     size: 100mm 50mm;
+    margin: 0 !important;
+  }
+  @page size5x3 {
+    size: 50mm 30mm;
+    margin: 0 !important;
+  }
+  .print-10x5 {
+    page: size10x5;
+  }
+  .print-5x3 {
+    page: size5x3;
   }
 }
 
@@ -334,23 +347,24 @@ button.secondary:hover {
   border-right: 1px dashed #ccc;
 }
 
-.label-wrapper.size-3x3 {
-  width: 30mm;
+.label-wrapper.size-5x3 {
+  width: 50mm;
   height: 30mm;
-  padding: 0.5mm 1mm;
+  padding: 1.5mm 2.5mm;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  box-sizing: border-box;
 }
 
-/* Ajustes de fuente por tamaño 3x3cm */
-.size-3x3 .label-header { font-size: 3.5pt; margin: 0; padding-bottom: 0.2mm; line-height: 1; }
-.size-3x3 .label-med-name { font-size: 7.5pt; margin: 0; line-height: 1; font-weight: 900; }
-.size-3x3 .label-unit { display: none; }
-.size-3x3 .label-dosage { font-size: 5.5pt; border-width: 0.5px; padding: 0.2mm; margin: 0; line-height: 1; }
-.size-3x3 .label-table { font-size: 4pt; }
-.size-3x3 .label-cell-title { font-size: 3.5pt; }
-.size-3x3 .label-total-count { font-size: 4.5pt; margin: 0; line-height: 1; }
+/* Ajustes de fuente por tamaño 5x3cm */
+.size-5x3 .label-header { font-size: 6.5pt; margin: 0; padding-bottom: 0.2mm; line-height: 1; }
+.size-5x3 .label-med-name { font-size: 10pt; margin: 0.5mm 0; line-height: 1; font-weight: 900; }
+.size-5x3 .label-unit { display: none; }
+.size-5x3 .label-dosage { font-size: 8pt; border-width: 1px; padding: 0.5mm; margin: 0.2mm 0; line-height: 1; }
+.size-5x3 .label-table { font-size: 5pt; }
+.size-5x3 .label-cell-title { font-size: 5.5pt; }
+.size-5x3 .label-total-count { font-size: 6.5pt; margin: 0; line-height: 1; }
 
 .size-10x5 .label-header { font-size: 7.5pt; margin-bottom: 0.5mm; padding-bottom: 0.5mm; }
 .size-10x5 .label-med-name { font-size: 13pt; margin: 0.5mm 0; line-height: 1.1; font-weight: 900; }
@@ -429,14 +443,14 @@ button.secondary:hover {
   word-break: break-all;
 }
 
-.size-3x3 .label-grid-item { 
-  padding: 0.1mm 0.3mm; 
+.size-5x3 .label-grid-item { 
+  padding: 0.2mm 0.5mm; 
   flex-direction: row; 
   justify-content: space-between; 
   align-items: baseline; 
 }
-.size-3x3 .label-cell-title { font-size: 3pt; margin-right: 0.5mm; }
-.size-3x3 .label-cell-value { font-size: 3.5pt; line-height: 1; font-weight: normal; }
+.size-5x3 .label-cell-title { font-size: 4.5pt; margin-right: 0.5mm; }
+.size-5x3 .label-cell-value { font-size: 5.5pt; line-height: 1; font-weight: normal; }
 
 .size-10x5 .label-grid-item { padding: 0.5mm 1mm; border-width: 0.3mm; }
 .size-10x5 .label-cell-title { font-size: 7pt; }
