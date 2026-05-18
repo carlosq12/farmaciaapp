@@ -75,6 +75,7 @@ export default function InventoryPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<"activo" | "historial">("activo");
+  const [selectedHistoryIds, setSelectedHistoryIds] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   // Edit State
@@ -475,7 +476,10 @@ export default function InventoryPage() {
               boxShadow: "inset 0 -4px 8px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.05)"
             })
           }}
-          onClick={() => setActiveTab("activo")}
+          onClick={() => {
+            setActiveTab("activo");
+            setSelectedHistoryIds([]);
+          }}
         >
           🏷️ Etiquetas Activas
         </button>
@@ -511,7 +515,10 @@ export default function InventoryPage() {
               boxShadow: "inset 0 -4px 8px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.05)"
             })
           }}
-          onClick={() => setActiveTab("historial")}
+          onClick={() => {
+            setActiveTab("historial");
+            setSelectedHistoryIds([]);
+          }}
         >
           📜 Historial
         </button>
@@ -569,28 +576,68 @@ export default function InventoryPage() {
               </button>
             )}
             
-            {activeTab === "historial" && (
-              <button 
-                className="secondary" 
-                style={{ 
-                  padding: "0.7rem 1.2rem", 
-                  background: "white",
-                  border: "1px solid #e2e8f0",
-                  borderRadius: "12px",
-                  display: "flex", 
-                  alignItems: "center", 
-                  gap: "8px",
-                  fontWeight: 700,
-                  fontSize: "0.85rem"
-                }}
-                onClick={() => {
-                  setIsPrinting(false);
-                  setIsPrintingReport(true);
-                  setTimeout(() => { window.print(); }, 800);
-                }}
-              >
-                <span>🖨️</span> Imprimir Reporte
-              </button>
+            {activeTab === "historial" && filteredReintegros.length > 0 && (
+              <>
+                <button
+                  className="secondary"
+                  style={{
+                    padding: "0.7rem 1.2rem",
+                    background: "white",
+                    border: "1px solid #e2e8f0",
+                    borderRadius: "12px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    fontWeight: 700,
+                    fontSize: "0.85rem",
+                    color: "#475569",
+                    cursor: "pointer",
+                    transition: "all 0.2s"
+                  }}
+                  onClick={() => {
+                    const allFilteredIds = filteredReintegros.map(item => item.docId);
+                    const allSelected = allFilteredIds.every(id => selectedHistoryIds.includes(id));
+                    if (allSelected) {
+                      setSelectedHistoryIds(prev => prev.filter(id => !allFilteredIds.includes(id)));
+                    } else {
+                      setSelectedHistoryIds(prev => Array.from(new Set([...prev, ...allFilteredIds])));
+                    }
+                  }}
+                >
+                  <span>{filteredReintegros.map(item => item.docId).every(id => selectedHistoryIds.includes(id)) ? "☑️" : "⬜"}</span> 
+                  {filteredReintegros.map(item => item.docId).every(id => selectedHistoryIds.includes(id)) 
+                    ? "Deseleccionar Todos" 
+                    : "Seleccionar Todos"}
+                </button>
+
+                <button 
+                  style={{ 
+                    padding: "0.7rem 1.2rem", 
+                    background: selectedHistoryIds.length > 0 ? "linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%)" : "white",
+                    border: "1px solid " + (selectedHistoryIds.length > 0 ? "#7c3aed" : "#e2e8f0"),
+                    color: selectedHistoryIds.length > 0 ? "white" : "#1e293b",
+                    borderRadius: "12px",
+                    display: "flex", 
+                    alignItems: "center", 
+                    gap: "8px",
+                    fontWeight: 700,
+                    fontSize: "0.85rem",
+                    cursor: "pointer",
+                    boxShadow: selectedHistoryIds.length > 0 ? "0 4px 12px rgba(124, 58, 237, 0.25)" : "none",
+                    transition: "all 0.2s"
+                  }}
+                  onClick={() => {
+                    setIsPrinting(false);
+                    setIsPrintingReport(true);
+                    setTimeout(() => { window.print(); }, 800);
+                  }}
+                >
+                  <span>🖨️</span> 
+                  {selectedHistoryIds.length > 0 
+                    ? `Imprimir Reporte (${selectedHistoryIds.length})` 
+                    : "Imprimir Reporte Completo"}
+                </button>
+              </>
             )}
 
             <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
@@ -657,6 +704,27 @@ export default function InventoryPage() {
                     {/* Fila Superior con Datos */}
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1.25rem 1.5rem", width: "100%", flexWrap: "wrap", gap: "1.5rem" }}>
                       <div style={{ display: "flex", gap: "1.25rem", alignItems: "center", minWidth: "250px" }}>
+                        {/* Checkbox de Selección */}
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <input
+                            type="checkbox"
+                            style={{
+                              width: "18px",
+                              height: "18px",
+                              cursor: "pointer",
+                              accentColor: "#7c3aed",
+                              margin: 0
+                            }}
+                            checked={selectedHistoryIds.includes(item.docId)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setSelectedHistoryIds(prev => [...prev, item.docId]);
+                              } else {
+                                setSelectedHistoryIds(prev => prev.filter(id => id !== item.docId));
+                              }
+                            }}
+                          />
+                        </div>
                         <div style={{ 
                           width: "48px", 
                           height: "48px", 
@@ -1290,20 +1358,22 @@ export default function InventoryPage() {
             <table className="report-table">
               <thead><tr><th>Medicamento</th><th>Fecha</th><th>Proveedor</th><th>Serie</th><th>Vencimiento</th><th>Correlativo</th><th>Responsable</th></tr></thead>
               <tbody>
-                {filteredReintegros.map((item) => {
-                  const totalLabels = item.comprimidosPorCaja ? Math.ceil(item.cantidadComprimidos / (Number(item.comprimidosPorSobre) || 1)) : 1;
-                  return (
-                    <tr key={item.docId}>
-                      <td><strong>{item.nombreMedicamento}</strong><br/><span style={{ fontSize: "0.8em" }}>{item.posologia}</span></td>
-                      <td>{item.fecha ? new Date(item.fecha.seconds * 1000).toLocaleDateString('es-CL') : ""}</td>
-                      <td>{item.proveedor || "-"}</td>
-                      <td>{item.id}</td>
-                      <td>{item.vto || "-"}</td>
-                      <td>{item.correlativoInicial ? `${item.correlativoPrefijo}-${item.correlativoInicial} al ${item.correlativoPrefijo}-${item.correlativoInicial + totalLabels - 1}` : "-"}</td>
-                      <td>{item.ingresadoPor}</td>
-                    </tr>
-                  );
-                })}
+                {filteredReintegros
+                  .filter((item) => selectedHistoryIds.length === 0 || selectedHistoryIds.includes(item.docId))
+                  .map((item) => {
+                    const totalLabels = item.comprimidosPorCaja ? Math.ceil(item.cantidadComprimidos / (Number(item.comprimidosPorSobre) || 1)) : 1;
+                    return (
+                      <tr key={item.docId}>
+                        <td><strong>{item.nombreMedicamento}</strong><br/><span style={{ fontSize: "0.8em" }}>{item.posologia}</span></td>
+                        <td>{item.fecha ? new Date(item.fecha.seconds * 1000).toLocaleDateString('es-CL') : ""}</td>
+                        <td>{item.proveedor || "-"}</td>
+                        <td>{item.id}</td>
+                        <td>{item.vto || "-"}</td>
+                        <td>{item.correlativoInicial ? `${item.correlativoPrefijo}-${item.correlativoInicial} al ${item.correlativoPrefijo}-${item.correlativoInicial + totalLabels - 1}` : "-"}</td>
+                        <td>{item.ingresadoPor}</td>
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
           </div>
