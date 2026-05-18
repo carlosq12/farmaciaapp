@@ -390,7 +390,8 @@ export default function InventoryPage() {
         if (fin > maxCorrelativo) maxCorrelativo = fin;
       });
       
-      let currentNext = maxCorrelativo + 1;
+      const nextCorrelativoBase = maxCorrelativo + 1;
+      let currentNext = nextCorrelativoBase;
       const qA = query(collection(db, "reintegros"));
       const snapA = await getDocs(qA);
       
@@ -413,8 +414,8 @@ export default function InventoryPage() {
         currentNext += bolsas;
       }
       
-      await setDoc(doc(db, "configuracion", "contadores"), { secuenciaEtiquetas: currentNext });
-      showDialog("Sincronización Exitosa", `Próximo correlativo: ${currentNext}`, "success");
+      await setDoc(doc(db, "configuracion", "contadores"), { secuenciaEtiquetas: nextCorrelativoBase });
+      showDialog("Sincronización Exitosa", `Próximo correlativo: ${nextCorrelativoBase}`, "success");
     } catch (error) {
       console.error("Error al sincronizar:", error);
       showDialog("Error", "Error al intentar sincronizar.", "danger");
