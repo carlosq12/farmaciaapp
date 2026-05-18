@@ -313,22 +313,21 @@ button.secondary:hover {
 }
 
 .label-wrapper.size-10x5 {
-  width: 100%;
-  max-width: 100mm;
+  width: 100mm;
   height: 50mm;
   display: flex;
   flex-direction: row;
+  box-sizing: border-box;
 }
 
 .label-wrapper.size-10x5 .label-sub-content {
-  flex: 1;
+  width: 50mm;
   height: 50mm;
-  padding: 1mm 3mm;
+  padding: 2mm 3mm;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  gap: 0.5mm;
+  justify-content: space-between;
 }
 
 .label-wrapper.size-10x5 .label-sub-content:first-child {
@@ -353,11 +352,11 @@ button.secondary:hover {
 .size-3x3 .label-cell-title { font-size: 3.5pt; }
 .size-3x3 .label-total-count { font-size: 4.5pt; margin: 0; line-height: 1; }
 
-.size-10x5 .label-header { font-size: 8pt; margin-bottom: 0.5mm; padding-bottom: 0.5mm; }
-.size-10x5 .label-med-name { font-size: 14pt; margin: 0.5mm 0; line-height: 1; font-weight: 900; }
+.size-10x5 .label-header { font-size: 7.5pt; margin-bottom: 0.5mm; padding-bottom: 0.5mm; }
+.size-10x5 .label-med-name { font-size: 13pt; margin: 0.5mm 0; line-height: 1.1; font-weight: 900; }
 .size-10x5 .label-unit { display: none; }
-.size-10x5 .label-dosage { font-size: 11pt; border-width: 1.5px; padding: 1mm; margin-bottom: 1mm; line-height: 1.1; }
-.size-10x5 .label-total-count { font-size: 9pt; margin-bottom: 1mm; }
+.size-10x5 .label-dosage { font-size: 10.5pt; border-width: 1.5px; padding: 1mm; margin-bottom: 1mm; line-height: 1.1; }
+.size-10x5 .label-total-count { font-size: 9pt; margin-bottom: 1.5mm; }
 
 .label-header {
   text-align: center;
@@ -439,9 +438,9 @@ button.secondary:hover {
 .size-3x3 .label-cell-title { font-size: 3pt; margin-right: 0.5mm; }
 .size-3x3 .label-cell-value { font-size: 3.5pt; line-height: 1; font-weight: normal; }
 
-.size-10x5 .label-grid-item { padding: 0.4mm 1mm; border-width: 0.3mm; }
-.size-10x5 .label-cell-title { font-size: 6.5pt; }
-.size-10x5 .label-cell-value { font-size: 9.5pt; }
+.size-10x5 .label-grid-item { padding: 0.5mm 1mm; border-width: 0.3mm; }
+.size-10x5 .label-cell-title { font-size: 7pt; }
+.size-10x5 .label-cell-value { font-size: 9pt; }
 
 /* Suggestions Autocomplete */
 .suggestions-list {
