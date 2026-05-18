@@ -551,282 +551,486 @@ export default function InventoryPage() {
         </div>
 
         <div className="list-container">
-          {filteredReintegros.length === 0 ? (
-            <div style={{ textAlign: "center", padding: "4rem", color: "var(--text-muted)" }}>
-              <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>📦</div>
-              <p>No hay medicamentos registrados en el sistema.</p>
-            </div>
-          ) : (
-            filteredReintegros.map((item) => (
-              <div key={item.docId} className="list-item" style={{ flexDirection: "column", gap: "0", padding: "0" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1.25rem 1.5rem", width: "100%", flexWrap: "wrap", gap: "1.5rem" }}>
-                  <div style={{ display: "flex", gap: "1.25rem", alignItems: "center", minWidth: "250px" }}>
-                    <div style={{ 
-                      width: "52px", 
-                      height: "52px", 
-                      borderRadius: "14px", 
-                      background: "#fdf2f8", 
-                      display: "flex", 
-                      alignItems: "center", 
-                      justifyContent: "center", 
-                      color: "var(--primary)", 
-                      fontSize: "1.25rem",
-                      fontWeight: 800
-                    }}>
-                      {item.nombreMedicamento.charAt(0).toUpperCase()}
-                    </div>
-                    <div>
-                      <h4 style={{ fontSize: "1.15rem", fontWeight: 700, margin: 0, textDecoration: item.estado === "realizado" ? "line-through" : "none", color: item.estado === "realizado" ? "var(--text-muted)" : "inherit" }}>
-                        {item.nombreMedicamento}
-                      </h4>
-                      <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", margin: "4px 0 0 0" }}>
-                        ID: <span style={{ fontWeight: 700, color: "var(--primary)" }}>{item.id}</span> • Ingresado por: <span style={{ fontWeight: 600 }}>{item.ingresadoPor || "Admin"}</span>
-                      </p>
-                    </div>
-                  </div>
+          {activeTab === "historial" ? (
+            filteredReintegros.length === 0 ? (
+              <div style={{ textAlign: "center", padding: "4rem", color: "var(--text-muted)" }}>
+                <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>📦</div>
+                <p>No hay medicamentos registrados en el historial.</p>
+              </div>
+            ) : (
+              <div style={{
+                background: "white",
+                borderRadius: "20px",
+                border: "1px solid #e2e8f0",
+                boxShadow: "0 4px 20px -2px rgba(0, 0, 0, 0.03)",
+                overflow: "hidden",
+                width: "100%"
+              }}>
+                {filteredReintegros.map((item, idx) => (
+                  <div 
+                    key={item.docId} 
+                    style={{ 
+                      display: "flex",
+                      flexDirection: "column",
+                      background: "white",
+                      borderBottom: idx === filteredReintegros.length - 1 ? "none" : "1px solid #f1f5f9",
+                      transition: "all 0.2s ease"
+                    }}
+                    className="history-row"
+                  >
+                    {/* Fila Superior con Datos */}
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1.25rem 1.5rem", width: "100%", flexWrap: "wrap", gap: "1.5rem" }}>
+                      <div style={{ display: "flex", gap: "1.25rem", alignItems: "center", minWidth: "250px" }}>
+                        <div style={{ 
+                          width: "48px", 
+                          height: "48px", 
+                          borderRadius: "12px", 
+                          background: "#f8fafc", 
+                          display: "flex", 
+                          alignItems: "center", 
+                          justifyContent: "center", 
+                          color: "#64748b", 
+                          fontSize: "1.15rem",
+                          fontWeight: 800,
+                          border: "1px solid #e2e8f0"
+                        }}>
+                          {item.nombreMedicamento.charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                          <h4 style={{ fontSize: "1.1rem", fontWeight: 700, margin: 0, textDecoration: "line-through", color: "var(--text-muted)" }}>
+                            {item.nombreMedicamento}
+                          </h4>
+                          <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", margin: "4px 0 0 0" }}>
+                            ID: <span style={{ fontWeight: 700 }}>{item.id}</span> • Por: <span style={{ fontWeight: 600 }}>{item.ingresadoPor || "Admin"}</span>
+                          </p>
+                        </div>
+                      </div>
 
-                  {/* Contenedores de Información Intermedia (Chips) */}
-                  <div style={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: "0.5rem",
-                    flex: 1,
-                    justifyContent: "flex-start",
-                    minWidth: "200px"
-                  }}>
-                    {item.vto && (
+                      {/* Chips de Información */}
                       <div style={{
                         display: "flex",
-                        alignItems: "center",
-                        gap: "6px",
-                        background: "#fff5f5",
-                        border: "1px solid #ffe3e3",
-                        color: "#c92a2a",
-                        fontSize: "0.75rem",
-                        fontWeight: 700,
-                        padding: "5px 10px",
-                        borderRadius: "8px",
-                        boxShadow: "0 1px 2px rgba(0,0,0,0.02)"
+                        flexWrap: "wrap",
+                        gap: "0.5rem",
+                        flex: 1,
+                        justifyContent: "flex-start",
+                        minWidth: "200px"
                       }}>
-                        📅 Vence: {item.vto.split('-').reverse().join('-')}
-                      </div>
-                    )}
-                    {item.proveedor && (
-                      <div style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "6px",
-                        background: "#f0f9ff",
-                        border: "1px solid #e0f2fe",
-                        color: "#0369a1",
-                        fontSize: "0.75rem",
-                        fontWeight: 700,
-                        padding: "5px 10px",
-                        borderRadius: "8px",
-                        boxShadow: "0 1px 2px rgba(0,0,0,0.02)"
-                      }}>
-                        🏢 Prov: {item.proveedor}
-                      </div>
-                    )}
-                    {item.regIsp && (
-                      <div style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "6px",
-                        background: "#fdfcfa",
-                        border: "1px solid #fef3c7",
-                        color: "#b45309",
-                        fontSize: "0.75rem",
-                        fontWeight: 700,
-                        padding: "5px 10px",
-                        borderRadius: "8px",
-                        boxShadow: "0 1px 2px rgba(0,0,0,0.02)"
-                      }}>
-                        📜 ISP: {item.regIsp}
-                      </div>
-                    )}
-                    {item.correlativoInicial ? (
-                      <div style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "6px",
-                        background: "#f5f3ff",
-                        border: "1px solid #ede9fe",
-                        color: "#6d28d9",
-                        fontSize: "0.75rem",
-                        fontWeight: 700,
-                        padding: "5px 10px",
-                        borderRadius: "8px",
-                        boxShadow: "0 1px 2px rgba(0,0,0,0.02)"
-                      }}>
-                        🔢 Corr: {item.correlativoPrefijo || "M"}-{item.correlativoInicial} al {item.correlativoPrefijo || "M"}-{item.correlativoInicial + Math.ceil(Number(item.cantidadComprimidos) / (Number(item.comprimidosPorSobre) || 1)) - 1}
-                      </div>
-                    ) : null}
-                  </div>
-
-                  {/* Tarjeta del Stock */}
-                  <div style={{
-                    background: "linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%)",
-                    border: "1px solid #fbcfe8",
-                    borderRadius: "14px",
-                    padding: "0.6rem 1.25rem",
-                    textAlign: "right",
-                    minWidth: "160px",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    boxShadow: "0 2px 4px rgba(216, 27, 96, 0.03)"
-                  }}>
-                    <div style={{ color: "var(--primary)", fontWeight: 800, fontSize: "1.25rem", lineHeight: 1.1 }}>
-                      {item.cantidadCajas} <span style={{ fontSize: "0.75rem", fontWeight: 600, textTransform: "uppercase" }}>cajas</span>
-                    </div>
-                    <div style={{ fontSize: "0.75rem", color: "#86198f", fontWeight: 700, marginTop: "4px" }}>
-                      {item.comprimidosPorCaja} c/u • {item.cantidadComprimidos} total
-                    </div>
-                  </div>
-                </div>
-
-                <div style={{ height: "1px", background: "#f1f5f9", width: "100%" }}></div>
-
-                <div style={{ 
-                  display: "flex", 
-                  justifyContent: "space-between", 
-                  alignItems: "center", 
-                  padding: "0.75rem 1.25rem", 
-                  background: "#fafafa", 
-                  borderBottomLeftRadius: "16px", 
-                  borderBottomRightRadius: "16px",
-                  width: "100%" 
-                }}>
-                  <div style={{ display: "flex", gap: "0.6rem", alignItems: "center" }}>
-                    {item.solicitudPendiente ? (
-                      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", background: "#fffbeb", padding: "4px 10px", borderRadius: "8px", border: "1px solid #fde68a" }}>
-                        <span style={{ fontSize: "0.75rem", color: "#b45309", fontWeight: 700 }}>
-                          ⏳ PENDIENTE: {item.solicitudPendiente.toUpperCase()}
-                        </span>
-                        {["administrador", "subrogante"].includes(user?.rol?.toLowerCase() || "") && (
-                          <div style={{ display: "flex", gap: "4px" }}>
-                            <button 
-                              style={{ background: "#22c55e", border: "none", borderRadius: "4px", cursor: "pointer", color: "white", padding: "2px 8px", fontSize: "0.75rem", fontWeight: 700 }}
-                              onClick={async () => {
-                                if (item.solicitudPendiente === "imprimir") {
-                                  await updateDoc(doc(db, "reintegros", item.docId), {
-                                    solicitudPendiente: null,
-                                    autorizadoImprimir: true
-                                  });
-                                } else if (item.solicitudPendiente === "finalizar") {
-                                  toggleEstado(item.docId, item.estado);
-                                } else {
-                                  aprobarSolicitud(item.docId, item.solicitudPendiente!);
-                                }
-                              }}
-                            >
-                              ✓
-                            </button>
-                            <button 
-                              style={{ background: "#ef4444", border: "none", borderRadius: "4px", cursor: "pointer", color: "white", padding: "2px 8px", fontSize: "0.75rem", fontWeight: 700 }}
-                              onClick={() => rechazarSolicitud(item.docId)}
-                            >✕</button>
+                        {item.vto && (
+                          <div style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "6px",
+                            background: "#fff5f5",
+                            border: "1px solid #ffe3e3",
+                            color: "#c92a2a",
+                            fontSize: "0.75rem",
+                            fontWeight: 700,
+                            padding: "4px 8px",
+                            borderRadius: "6px"
+                          }}>
+                            📅 Vto: {item.vto.split('-').reverse().join('-')}
                           </div>
                         )}
-                      </div>
-                    ) : (
-                      <>
-                        {activeTab === "activo" && (
-                          <button 
-                            style={{ 
-                              background: item.etiquetaGuardada ? (item.solicitudPendiente === "finalizar" ? "#64748b" : "#22c55e") : "#f1f5f9", 
-                              border: "none", 
-                              borderRadius: "8px", 
-                              cursor: item.etiquetaGuardada ? "pointer" : "not-allowed", 
-                              color: item.etiquetaGuardada ? "white" : "#94a3b8", 
-                              padding: "6px 12px", 
-                              fontSize: "0.8rem", 
-                              fontWeight: 700,
-                              display: "flex",
-                              alignItems: "center",
-                              gap: "4px",
-                              transition: "all 0.2s"
-                            }}
-                            onClick={async () => {
-                              if (!item.etiquetaGuardada) return;
-                              if (["administrador", "subrogante"].includes(user?.rol?.toLowerCase() || "")) {
-                                toggleEstado(item.docId, item.estado);
-                              } else {
-                                try {
-                                  await updateDoc(doc(db, "reintegros", item.docId), {
-                                    solicitudPendiente: "finalizar"
-                                  });
-                                  showDialog("Solicitud enviada", "La finalización está pendiente de aprobación.", "info");
-                                } catch (e) { console.error(e); }
-                              }
-                            }}
-                            disabled={!item.etiquetaGuardada || item.solicitudPendiente === "finalizar"}
-                          >
-                            {item.solicitudPendiente === "finalizar" ? "⏳ Esperando..." : (item.etiquetaGuardada ? "✅ Listo" : "⏳ Pendiente")}
-                          </button>
+                        {item.proveedor && (
+                          <div style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "6px",
+                            background: "#f0f9ff",
+                            border: "1px solid #e0f2fe",
+                            color: "#0369a1",
+                            fontSize: "0.75rem",
+                            fontWeight: 700,
+                            padding: "4px 8px",
+                            borderRadius: "6px"
+                          }}>
+                            🏢 Prov: {item.proveedor}
+                          </div>
                         )}
+                        {item.regIsp && (
+                          <div style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "6px",
+                            background: "#fdfcfa",
+                            border: "1px solid #fef3c7",
+                            color: "#b45309",
+                            fontSize: "0.75rem",
+                            fontWeight: 700,
+                            padding: "4px 8px",
+                            borderRadius: "6px"
+                          }}>
+                            📜 ISP: {item.regIsp}
+                          </div>
+                        )}
+                        {item.correlativoInicial ? (
+                          <div style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "6px",
+                            background: "#f5f3ff",
+                            border: "1px solid #ede9fe",
+                            color: "#6d28d9",
+                            fontSize: "0.75rem",
+                            fontWeight: 700,
+                            padding: "4px 8px",
+                            borderRadius: "6px"
+                          }}>
+                            🔢 Corr: {item.correlativoPrefijo || "M"}-{item.correlativoInicial} al {item.correlativoPrefijo || "M"}-{item.correlativoInicial + Math.ceil(Number(item.cantidadComprimidos) / (Number(item.comprimidosPorSobre) || 1)) - 1}
+                          </div>
+                        ) : null}
+                      </div>
+
+                      {/* Caja del Stock */}
+                      <div style={{
+                        background: "#f8fafc",
+                        border: "1px solid #e2e8f0",
+                        borderRadius: "10px",
+                        padding: "0.5rem 1rem",
+                        textAlign: "right",
+                        minWidth: "150px"
+                      }}>
+                        <div style={{ color: "#475569", fontWeight: 800, fontSize: "1.15rem", lineHeight: 1.1 }}>
+                          {item.cantidadCajas} <span style={{ fontSize: "0.7rem", fontWeight: 600, textTransform: "uppercase" }}>cajas</span>
+                        </div>
+                        <div style={{ fontSize: "0.7rem", color: "#64748b", fontWeight: 700, marginTop: "2px" }}>
+                          {item.comprimidosPorCaja} c/u • {item.cantidadComprimidos} total
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Fila de Acciones */}
+                    <div style={{ 
+                      display: "flex", 
+                      justifyContent: "space-between", 
+                      alignItems: "center", 
+                      padding: "0.6rem 1.5rem", 
+                      background: "#fcfdfe", 
+                      borderTop: "1px solid #f1f5f9",
+                      width: "100%" 
+                    }}>
+                      <div style={{ display: "flex", gap: "0.5rem" }}>
                         <button 
-                          style={{ background: "white", border: "1px solid #e2e8f0", borderRadius: "8px", cursor: "pointer", color: "#64748b", padding: "6px 12px", fontSize: "0.8rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "4px" }}
+                          style={{ background: "white", border: "1px solid #e2e8f0", borderRadius: "6px", cursor: "pointer", color: "#64748b", padding: "5px 10px", fontSize: "0.75rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "4px" }}
                           onClick={() => { setEditProduct(item); setIsViewModalOpen(true); }}
                         >
                           👁️ Detalle
                         </button>
-                        {activeTab === "activo" && (
-                          <>
-                            <button 
-                              style={{ background: "white", border: "1px solid #bae6fd", borderRadius: "8px", cursor: "pointer", color: "#0369a1", padding: "6px 12px", fontSize: "0.8rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "4px" }}
-                              onClick={() => { setEditProduct(item); setIsEditModalOpen(true); }}
-                            >
-                              ✏️ Editar
-                            </button>
-                            {["administrador", "subrogante"].includes(user?.rol?.toLowerCase() || "") && (
-                              <button 
-                                style={{ background: "white", border: "1px solid #fecaca", borderRadius: "8px", cursor: "pointer", color: "#b91c1c", padding: "6px 12px", fontSize: "0.8rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "4px" }}
-                                onClick={() => handleDelete(item.docId)}
-                              >
-                                🗑️ Borrar
-                              </button>
-                            )}
-                          </>
-                        )}
-                      </>
-                    )}
+                      </div>
+
+                      <button 
+                        className="primary" 
+                        style={{ 
+                          padding: "0.5rem 1.2rem", 
+                          fontSize: "0.8rem",
+                          background: (item.autorizadoImprimir || ["administrador", "subrogante"].includes(user?.rol?.toLowerCase() || "")) ? "var(--primary)" : (item.solicitudPendiente === "imprimir" ? "#64748b" : "#94a3b8"),
+                          borderRadius: "8px",
+                          cursor: "pointer"
+                        }}
+                        onClick={async () => {
+                          if (["administrador", "subrogante"].includes(user?.rol?.toLowerCase() || "") || item.autorizadoImprimir) {
+                            openDistributeModal(item);
+                          } else {
+                            if (!item.solicitudPendiente) {
+                              try {
+                                await updateDoc(doc(db, "reintegros", item.docId), {
+                                  solicitudPendiente: "imprimir"
+                                });
+                                showDialog("Solicitud enviada", "Solicitud de impresión enviada al administrador.", "info");
+                              } catch (e) { console.error(e); }
+                            } else {
+                              showDialog("Aviso", "Ya existe una solicitud pendiente para este registro.", "warning");
+                            }
+                          }
+                        }}
+                      >
+                        {item.solicitudPendiente === "imprimir" ? "⏳ Esperando Autorización" : 
+                         (item.autorizadoImprimir || ["administrador", "subrogante"].includes(user?.rol?.toLowerCase() || "") ? 
+                          "📜 Ver Etiquetas" : "🔒 Solicitar Impresión")}
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )
+          ) : (
+            filteredReintegros.length === 0 ? (
+              <div style={{ textAlign: "center", padding: "4rem", color: "var(--text-muted)" }}>
+                <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>📦</div>
+                <p>No hay medicamentos registrados en el sistema.</p>
+              </div>
+            ) : (
+              filteredReintegros.map((item) => (
+                <div key={item.docId} className="list-item" style={{ flexDirection: "column", gap: "0", padding: "0" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1.25rem 1.5rem", width: "100%", flexWrap: "wrap", gap: "1.5rem" }}>
+                    <div style={{ display: "flex", gap: "1.25rem", alignItems: "center", minWidth: "250px" }}>
+                      <div style={{ 
+                        width: "52px", 
+                        height: "52px", 
+                        borderRadius: "14px", 
+                        background: "#fdf2f8", 
+                        display: "flex", 
+                        alignItems: "center", 
+                        justifyContent: "center", 
+                        color: "var(--primary)", 
+                        fontSize: "1.25rem",
+                        fontWeight: 800
+                      }}>
+                        {item.nombreMedicamento.charAt(0).toUpperCase()}
+                      </div>
+                      <div>
+                        <h4 style={{ fontSize: "1.15rem", fontWeight: 700, margin: 0, textDecoration: item.estado === "realizado" ? "line-through" : "none", color: item.estado === "realizado" ? "var(--text-muted)" : "inherit" }}>
+                          {item.nombreMedicamento}
+                        </h4>
+                        <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", margin: "4px 0 0 0" }}>
+                          ID: <span style={{ fontWeight: 700, color: "var(--primary)" }}>{item.id}</span> • Ingresado por: <span style={{ fontWeight: 600 }}>{item.ingresadoPor || "Admin"}</span>
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Contenedores de Información Intermedia (Chips) */}
+                    <div style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: "0.5rem",
+                      flex: 1,
+                      justifyContent: "flex-start",
+                      minWidth: "200px"
+                    }}>
+                      {item.vto && (
+                        <div style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "6px",
+                          background: "#fff5f5",
+                          border: "1px solid #ffe3e3",
+                          color: "#c92a2a",
+                          fontSize: "0.75rem",
+                          fontWeight: 700,
+                          padding: "5px 10px",
+                          borderRadius: "8px",
+                          boxShadow: "0 1px 2px rgba(0,0,0,0.02)"
+                        }}>
+                          📅 Vence: {item.vto.split('-').reverse().join('-')}
+                        </div>
+                      )}
+                      {item.proveedor && (
+                        <div style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "6px",
+                          background: "#f0f9ff",
+                          border: "1px solid #e0f2fe",
+                          color: "#0369a1",
+                          fontSize: "0.75rem",
+                          fontWeight: 700,
+                          padding: "5px 10px",
+                          borderRadius: "8px",
+                          boxShadow: "0 1px 2px rgba(0,0,0,0.02)"
+                        }}>
+                          🏢 Prov: {item.proveedor}
+                        </div>
+                      )}
+                      {item.regIsp && (
+                        <div style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "6px",
+                          background: "#fdfcfa",
+                          border: "1px solid #fef3c7",
+                          color: "#b45309",
+                          fontSize: "0.75rem",
+                          fontWeight: 700,
+                          padding: "5px 10px",
+                          borderRadius: "8px",
+                          boxShadow: "0 1px 2px rgba(0,0,0,0.02)"
+                        }}>
+                          📜 ISP: {item.regIsp}
+                        </div>
+                      )}
+                      {item.correlativoInicial ? (
+                        <div style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "6px",
+                          background: "#f5f3ff",
+                          border: "1px solid #ede9fe",
+                          color: "#6d28d9",
+                          fontSize: "0.75rem",
+                          fontWeight: 700,
+                          padding: "5px 10px",
+                          borderRadius: "8px",
+                          boxShadow: "0 1px 2px rgba(0,0,0,0.02)"
+                        }}>
+                          🔢 Corr: {item.correlativoPrefijo || "M"}-{item.correlativoInicial} al {item.correlativoPrefijo || "M"}-{item.correlativoInicial + Math.ceil(Number(item.cantidadComprimidos) / (Number(item.comprimidosPorSobre) || 1)) - 1}
+                        </div>
+                      ) : null}
+                    </div>
+
+                    {/* Tarjeta del Stock */}
+                    <div style={{
+                      background: "linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%)",
+                      border: "1px solid #fbcfe8",
+                      borderRadius: "14px",
+                      padding: "0.6rem 1.25rem",
+                      textAlign: "right",
+                      minWidth: "160px",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      boxShadow: "0 2px 4px rgba(216, 27, 96, 0.03)"
+                    }}>
+                      <div style={{ color: "var(--primary)", fontWeight: 800, fontSize: "1.25rem", lineHeight: 1.1 }}>
+                        {item.cantidadCajas} <span style={{ fontSize: "0.75rem", fontWeight: 600, textTransform: "uppercase" }}>cajas</span>
+                      </div>
+                      <div style={{ fontSize: "0.75rem", color: "#86198f", fontWeight: 700, marginTop: "4px" }}>
+                        {item.comprimidosPorCaja} c/u • {item.cantidadComprimidos} total
+                      </div>
+                    </div>
                   </div>
 
-                  <button 
-                    className="primary" 
-                    style={{ 
-                      padding: "0.6rem 1.2rem", 
-                      fontSize: "0.85rem",
-                      background: (activeTab === "activo" || item.autorizadoImprimir || ["administrador", "subrogante"].includes(user?.rol?.toLowerCase() || "")) ? "var(--primary)" : (item.solicitudPendiente === "imprimir" ? "#64748b" : "#94a3b8"),
-                      borderRadius: "10px",
-                      opacity: 1
-                    }}
-                    onClick={async () => {
-                      if (activeTab === "activo" || ["administrador", "subrogante"].includes(user?.rol?.toLowerCase() || "") || item.autorizadoImprimir) {
-                        openDistributeModal(item);
-                      } else {
-                        if (!item.solicitudPendiente) {
-                          try {
-                            await updateDoc(doc(db, "reintegros", item.docId), {
-                              solicitudPendiente: "imprimir"
-                            });
-                            showDialog("Solicitud enviada", "Solicitud de impresión enviada al administrador.", "info");
-                          } catch (e) { console.error(e); }
+                  <div style={{ height: "1px", background: "#f1f5f9", width: "100%" }}></div>
+
+                  <div style={{ 
+                    display: "flex", 
+                    justifyContent: "space-between", 
+                    alignItems: "center", 
+                    padding: "0.75rem 1.25rem", 
+                    background: "#fafafa", 
+                    borderBottomLeftRadius: "16px", 
+                    borderBottomRightRadius: "16px",
+                    width: "100%" 
+                  }}>
+                    <div style={{ display: "flex", gap: "0.6rem", alignItems: "center" }}>
+                      {item.solicitudPendiente ? (
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", background: "#fffbeb", padding: "4px 10px", borderRadius: "8px", border: "1px solid #fde68a" }}>
+                          <span style={{ fontSize: "0.75rem", color: "#b45309", fontWeight: 700 }}>
+                            ⏳ PENDIENTE: {item.solicitudPendiente.toUpperCase()}
+                          </span>
+                          {["administrador", "subrogante"].includes(user?.rol?.toLowerCase() || "") && (
+                            <div style={{ display: "flex", gap: "4px" }}>
+                              <button 
+                                style={{ background: "#22c55e", border: "none", borderRadius: "4px", cursor: "pointer", color: "white", padding: "2px 8px", fontSize: "0.75rem", fontWeight: 700 }}
+                                onClick={async () => {
+                                  if (item.solicitudPendiente === "imprimir") {
+                                    await updateDoc(doc(db, "reintegros", item.docId), {
+                                      solicitudPendiente: null,
+                                      autorizadoImprimir: true
+                                    });
+                                  } else if (item.solicitudPendiente === "finalizar") {
+                                    toggleEstado(item.docId, item.estado);
+                                  } else {
+                                    aprobarSolicitud(item.docId, item.solicitudPendiente!);
+                                  }
+                                }}
+                              >
+                                ✓
+                              </button>
+                              <button 
+                                style={{ background: "#ef4444", border: "none", borderRadius: "4px", cursor: "pointer", color: "white", padding: "2px 8px", fontSize: "0.75rem", fontWeight: 700 }}
+                                onClick={() => rechazarSolicitud(item.docId)}
+                              >✕</button>
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <>
+                          {activeTab === "activo" && (
+                            <button 
+                              style={{ 
+                                background: item.etiquetaGuardada ? (item.solicitudPendiente === "finalizar" ? "#64748b" : "#22c55e") : "#f1f5f9", 
+                                border: "none", 
+                                borderRadius: "8px", 
+                                cursor: item.etiquetaGuardada ? "pointer" : "not-allowed", 
+                                color: item.etiquetaGuardada ? "white" : "#94a3b8", 
+                                padding: "6px 12px", 
+                                fontSize: "0.8rem", 
+                                fontWeight: 700,
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "4px",
+                                transition: "all 0.2s"
+                              }}
+                              onClick={async () => {
+                                if (!item.etiquetaGuardada) return;
+                                if (["administrador", "subrogante"].includes(user?.rol?.toLowerCase() || "")) {
+                                  toggleEstado(item.docId, item.estado);
+                                } else {
+                                  try {
+                                    await updateDoc(doc(db, "reintegros", item.docId), {
+                                      solicitudPendiente: "finalizar"
+                                    });
+                                    showDialog("Solicitud enviada", "La finalización está pendiente de aprobación.", "info");
+                                  } catch (e) { console.error(e); }
+                                }
+                              }}
+                              disabled={!item.etiquetaGuardada || item.solicitudPendiente === "finalizar"}
+                            >
+                              {item.solicitudPendiente === "finalizar" ? "⏳ Esperando..." : (item.etiquetaGuardada ? "✅ Listo" : "⏳ Pendiente")}
+                            </button>
+                          )}
+                          <button 
+                            style={{ background: "white", border: "1px solid #e2e8f0", borderRadius: "8px", cursor: "pointer", color: "#64748b", padding: "6px 12px", fontSize: "0.8rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "4px" }}
+                            onClick={() => { setEditProduct(item); setIsViewModalOpen(true); }}
+                          >
+                            👁️ Detalle
+                          </button>
+                          {activeTab === "activo" && (
+                            <>
+                              <button 
+                                style={{ background: "white", border: "1px solid #bae6fd", borderRadius: "8px", cursor: "pointer", color: "#0369a1", padding: "6px 12px", fontSize: "0.8rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "4px" }}
+                                onClick={() => { setEditProduct(item); setIsEditModalOpen(true); }}
+                              >
+                                ✏️ Editar
+                              </button>
+                              {["administrador", "subrogante"].includes(user?.rol?.toLowerCase() || "") && (
+                                <button 
+                                  style={{ background: "white", border: "1px solid #fecaca", borderRadius: "8px", cursor: "pointer", color: "#b91c1c", padding: "6px 12px", fontSize: "0.8rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "4px" }}
+                                  onClick={() => handleDelete(item.docId)}
+                                >
+                                  🗑️ Borrar
+                                </button>
+                              )}
+                            </>
+                          )}
+                        </>
+                      )}
+                    </div>
+
+                    <button 
+                      className="primary" 
+                      style={{ 
+                        padding: "0.6rem 1.2rem", 
+                        fontSize: "0.85rem",
+                        background: (activeTab === "activo" || item.autorizadoImprimir || ["administrador", "subrogante"].includes(user?.rol?.toLowerCase() || "")) ? "var(--primary)" : (item.solicitudPendiente === "imprimir" ? "#64748b" : "#94a3b8"),
+                        borderRadius: "10px",
+                        opacity: 1
+                      }}
+                      onClick={async () => {
+                        if (activeTab === "activo" || ["administrador", "subrogante"].includes(user?.rol?.toLowerCase() || "") || item.autorizadoImprimir) {
+                          openDistributeModal(item);
                         } else {
-                          showDialog("Aviso", "Ya existe una solicitud pendiente para este registro.", "warning");
+                          if (!item.solicitudPendiente) {
+                            try {
+                              await updateDoc(doc(db, "reintegros", item.docId), {
+                                solicitudPendiente: "imprimir"
+                              });
+                              showDialog("Solicitud enviada", "Solicitud de impresión enviada al administrador.", "info");
+                            } catch (e) { console.error(e); }
+                          } else {
+                            showDialog("Aviso", "Ya existe una solicitud pendiente para este registro.", "warning");
+                          }
                         }
-                      }
-                    }}
-                  >
-                    {activeTab === "historial" && item.solicitudPendiente === "imprimir" ? "⏳ Esperando Autorización" : 
-                     (activeTab === "activo" || item.autorizadoImprimir || ["administrador", "subrogante"].includes(user?.rol?.toLowerCase() || "") ? 
-                      (activeTab === "activo" ? "📦 Crear Etiquetas" : "📜 Ver Etiquetas") : "🔒 Solicitar Impresión")}
-                  </button>
+                      }}
+                    >
+                      {item.solicitudPendiente === "imprimir" ? "⏳ Esperando Autorización" : 
+                       (item.autorizadoImprimir || ["administrador", "subrogante"].includes(user?.rol?.toLowerCase() || "") ? 
+                        "📜 Ver Etiquetas" : "🔒 Solicitar Impresión")}
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))
+              ))
+            )
           )}
         </div>
       </div>
