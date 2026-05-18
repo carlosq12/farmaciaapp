@@ -435,24 +435,100 @@ export default function InventoryPage() {
         </button>
       </div>
 
-      <div style={{ display: "flex", gap: "1rem", marginBottom: "1.5rem" }}>
+      <div style={{ 
+        display: "flex", 
+        gap: "6px", 
+        marginBottom: "-1px", 
+        paddingLeft: "1.5rem",
+        position: "relative",
+        zIndex: 6
+      }}>
         <button 
-          className={activeTab === "activo" ? "primary" : "secondary"}
-          style={{ padding: "0.6rem 1.5rem", fontSize: "0.9rem" }}
+          style={{ 
+            padding: "0.75rem 1.75rem", 
+            fontSize: "0.95rem", 
+            fontWeight: 800,
+            cursor: "pointer",
+            border: "1px solid #e2e8f0",
+            borderTopLeftRadius: "16px",
+            borderTopRightRadius: "16px",
+            borderBottomLeftRadius: "0px",
+            borderBottomRightRadius: "0px",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+            outline: "none",
+            ...(activeTab === "activo" ? {
+              background: "white",
+              borderBottom: "2.5px solid white",
+              color: "var(--primary)",
+              zIndex: 10,
+              boxShadow: "0 -4px 12px -2px rgba(216, 27, 96, 0.04)"
+            } : {
+              background: "linear-gradient(135deg, #f472b6 0%, #d81b60 100%)",
+              borderBottom: "1px solid #e2e8f0",
+              color: "white",
+              zIndex: 1,
+              opacity: 0.85,
+              transform: "translateY(3px)",
+              boxShadow: "inset 0 -4px 8px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.05)"
+            })
+          }}
           onClick={() => setActiveTab("activo")}
         >
-          Etiquetas Activas
+          🏷️ Etiquetas Activas
         </button>
         <button 
-          className={activeTab === "historial" ? "primary" : "secondary"}
-          style={{ padding: "0.6rem 1.5rem", fontSize: "0.9rem" }}
+          style={{ 
+            padding: "0.75rem 1.75rem", 
+            fontSize: "0.95rem", 
+            fontWeight: 800,
+            cursor: "pointer",
+            border: "1px solid #e2e8f0",
+            borderTopLeftRadius: "16px",
+            borderTopRightRadius: "16px",
+            borderBottomLeftRadius: "0px",
+            borderBottomRightRadius: "0px",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+            outline: "none",
+            ...(activeTab === "historial" ? {
+              background: "white",
+              borderBottom: "2.5px solid white",
+              color: "#7c3aed",
+              zIndex: 10,
+              boxShadow: "0 -4px 12px -2px rgba(124, 58, 237, 0.04)"
+            } : {
+              background: "linear-gradient(135deg, #c084fc 0%, #7c3aed 100%)",
+              borderBottom: "1px solid #e2e8f0",
+              color: "white",
+              zIndex: 1,
+              opacity: 0.85,
+              transform: "translateY(3px)",
+              boxShadow: "inset 0 -4px 8px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.05)"
+            })
+          }}
           onClick={() => setActiveTab("historial")}
         >
-          Historial
+          📜 Historial
         </button>
       </div>
 
-      <div className="card" style={{ padding: "2.5rem", borderRadius: "24px" }}>
+      <div 
+        className="card" 
+        style={{ 
+          padding: "2.5rem", 
+          borderRadius: "24px",
+          background: "white",
+          border: "1px solid #e2e8f0",
+          boxShadow: "0 10px 30px rgba(0, 0, 0, 0.03)",
+          position: "relative",
+          zIndex: 5
+        }}
+      >
         <div style={{ 
           display: "flex", 
           justifyContent: "space-between", 
