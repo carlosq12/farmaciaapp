@@ -559,8 +559,8 @@ export default function InventoryPage() {
           ) : (
             filteredReintegros.map((item) => (
               <div key={item.docId} className="list-item" style={{ flexDirection: "column", gap: "0", padding: "0" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1.25rem", width: "100%" }}>
-                  <div style={{ display: "flex", gap: "1.25rem", alignItems: "center" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1.25rem 1.5rem", width: "100%", flexWrap: "wrap", gap: "1.5rem" }}>
+                  <div style={{ display: "flex", gap: "1.25rem", alignItems: "center", minWidth: "250px" }}>
                     <div style={{ 
                       width: "52px", 
                       height: "52px", 
@@ -585,11 +585,102 @@ export default function InventoryPage() {
                     </div>
                   </div>
 
-                  <div style={{ textAlign: "right" }}>
-                    <div style={{ color: "var(--primary)", fontWeight: 800, fontSize: "1.3rem", lineHeight: 1 }}>
-                      {item.cantidadCajas} <span style={{ fontSize: "0.8rem", fontWeight: 500 }}>cajas</span>
+                  {/* Contenedores de Información Intermedia (Chips) */}
+                  <div style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "0.5rem",
+                    flex: 1,
+                    justifyContent: "flex-start",
+                    minWidth: "200px"
+                  }}>
+                    {item.vto && (
+                      <div style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px",
+                        background: "#fff5f5",
+                        border: "1px solid #ffe3e3",
+                        color: "#c92a2a",
+                        fontSize: "0.75rem",
+                        fontWeight: 700,
+                        padding: "5px 10px",
+                        borderRadius: "8px",
+                        boxShadow: "0 1px 2px rgba(0,0,0,0.02)"
+                      }}>
+                        📅 Vence: {item.vto.split('-').reverse().join('-')}
+                      </div>
+                    )}
+                    {item.proveedor && (
+                      <div style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px",
+                        background: "#f0f9ff",
+                        border: "1px solid #e0f2fe",
+                        color: "#0369a1",
+                        fontSize: "0.75rem",
+                        fontWeight: 700,
+                        padding: "5px 10px",
+                        borderRadius: "8px",
+                        boxShadow: "0 1px 2px rgba(0,0,0,0.02)"
+                      }}>
+                        🏢 Prov: {item.proveedor}
+                      </div>
+                    )}
+                    {item.regIsp && (
+                      <div style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px",
+                        background: "#fdfcfa",
+                        border: "1px solid #fef3c7",
+                        color: "#b45309",
+                        fontSize: "0.75rem",
+                        fontWeight: 700,
+                        padding: "5px 10px",
+                        borderRadius: "8px",
+                        boxShadow: "0 1px 2px rgba(0,0,0,0.02)"
+                      }}>
+                        📜 ISP: {item.regIsp}
+                      </div>
+                    )}
+                    {item.correlativoInicial ? (
+                      <div style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px",
+                        background: "#f5f3ff",
+                        border: "1px solid #ede9fe",
+                        color: "#6d28d9",
+                        fontSize: "0.75rem",
+                        fontWeight: 700,
+                        padding: "5px 10px",
+                        borderRadius: "8px",
+                        boxShadow: "0 1px 2px rgba(0,0,0,0.02)"
+                      }}>
+                        🔢 Corr: {item.correlativoPrefijo || "M"}-{item.correlativoInicial} al {item.correlativoPrefijo || "M"}-{item.correlativoInicial + Math.ceil(Number(item.cantidadComprimidos) / (Number(item.comprimidosPorSobre) || 1)) - 1}
+                      </div>
+                    ) : null}
+                  </div>
+
+                  {/* Tarjeta del Stock */}
+                  <div style={{
+                    background: "linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%)",
+                    border: "1px solid #fbcfe8",
+                    borderRadius: "14px",
+                    padding: "0.6rem 1.25rem",
+                    textAlign: "right",
+                    minWidth: "160px",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    boxShadow: "0 2px 4px rgba(216, 27, 96, 0.03)"
+                  }}>
+                    <div style={{ color: "var(--primary)", fontWeight: 800, fontSize: "1.25rem", lineHeight: 1.1 }}>
+                      {item.cantidadCajas} <span style={{ fontSize: "0.75rem", fontWeight: 600, textTransform: "uppercase" }}>cajas</span>
                     </div>
-                    <div style={{ fontSize: "0.85rem", color: "#64748b", fontWeight: 600, marginTop: "4px" }}>
+                    <div style={{ fontSize: "0.75rem", color: "#86198f", fontWeight: 700, marginTop: "4px" }}>
                       {item.comprimidosPorCaja} c/u • {item.cantidadComprimidos} total
                     </div>
                   </div>
