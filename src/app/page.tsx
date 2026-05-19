@@ -1213,19 +1213,21 @@ export default function InventoryPage() {
                           <div className="label-med-name">{selectedProduct?.nombreMedicamento}</div>
                           <div className="label-unit">Comprimidos</div>
                           <div className="label-dosage">{distributionForm.posologia}</div>
-                          <div className="label-total-count">Total: {distributionForm.comprimidosPorSobre} {Number(distributionForm.comprimidosPorSobre) === 1 ? 'comprimido' : 'comprimidos'}</div>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", width: "100%", marginBottom: "0.5mm" }}>
+                            <div style={{ fontSize: "4.5pt", fontWeight: "bold", lineHeight: 1 }}>PREP:<br/>{(selectedProduct?.ingresadoPor?.split(' ')[0] || user?.nombreCompleto?.split(' ')[0] || "").substring(0, 10)}</div>
+                            <div className="label-total-count" style={{ margin: 0 }}>Total: {distributionForm.comprimidosPorSobre} {Number(distributionForm.comprimidosPorSobre) === 1 ? 'comprimido' : 'comprimidos'}</div>
+                            <div style={{ fontSize: "4.5pt", fontWeight: "bold", lineHeight: 1, textAlign: "right" }}>CC:<br/>________</div>
+                          </div>
                           <div className="label-grid">
                             <div className="label-grid-item"><span className="label-cell-title">VENC:</span><span className="label-cell-value">{distributionForm.vto}</span></div>
                             <div className="label-grid-item"><span className="label-cell-title">SERIE:</span><span className="label-cell-value">{distributionForm.seri}</span></div>
                             <div className="label-grid-item"><span className="label-cell-title">ISP:</span><span className="label-cell-value">{distributionForm.regIsp}</span></div>
                             <div className="label-grid-item"><span className="label-cell-title">N° BOL:</span><span className="label-cell-value">{index + 1}/{array.length}</span></div>
-                            <div className="label-grid-item" style={{ gridColumn: "span 2", textAlign: "center", borderTop: "none", background: "#f8fafc", position: "relative", paddingBottom: "3px" }}>
-                              <div style={{ position: "absolute", left: "2px", bottom: "2px", fontSize: "4pt", fontWeight: "bold", textAlign: "left" }}>PREP:<br/>{selectedProduct?.ingresadoPor?.split(' ')[0] || user?.nombreCompleto?.split(' ')[0]}</div>
+                            <div className="label-grid-item" style={{ gridColumn: "span 2", textAlign: "center", borderTop: "none", background: "#f8fafc" }}>
                               <span className="label-cell-title" style={{ fontSize: "5pt" }}>CORRELATIVO ÚNICO</span>
                               <span className="label-cell-value" style={{ fontSize: "7pt", fontWeight: 900 }}>
                                 {(selectedProduct?.correlativoInicial) ? `M-${selectedProduct.correlativoInicial + index}` : (nextCorrelativo ? `M-${nextCorrelativo + index}` : "CARGANDO...")}
                               </span>
-                              <div style={{ position: "absolute", right: "2px", bottom: "2px", fontSize: "4pt", fontWeight: "bold", textAlign: "right" }}>CC: _____</div>
                             </div>
                           </div>
                         </div>
@@ -1389,15 +1391,17 @@ export default function InventoryPage() {
                 <div className="label-header">HOSPITAL DE CUREPTO<br/>SERVICIO DE FARMACIA</div>
                 <div className="label-med-name">{selectedProduct?.nombreMedicamento}</div>
                 <div className="label-dosage">{distributionForm.posologia}</div>
-                <div className="label-total-count">Total: {distributionForm.comprimidosPorSobre} comp.</div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", width: "100%", marginBottom: "0.5mm" }}>
+                  <div style={{ fontSize: "4.5pt", fontWeight: "bold", lineHeight: 1 }}>PREP:<br/>{(selectedProduct?.ingresadoPor?.split(' ')[0] || user?.nombreCompleto?.split(' ')[0] || "").substring(0, 10)}</div>
+                  <div className="label-total-count" style={{ margin: 0 }}>Total: {distributionForm.comprimidosPorSobre} comp.</div>
+                  <div style={{ fontSize: "4.5pt", fontWeight: "bold", lineHeight: 1, textAlign: "right" }}>CC:<br/>________</div>
+                </div>
                 <div className="label-grid">
                   <div className="label-grid-item"><span className="label-cell-title">VENC:</span><span className="label-cell-value">{distributionForm.vto}</span></div>
                   <div className="label-grid-item"><span className="label-cell-title">SERIE:</span><span className="label-cell-value">{distributionForm.seri}</span></div>
-                  <div className="label-grid-item" style={{ gridColumn: "span 2", textAlign: "center", borderTop: "none", background: "#f8fafc", position: "relative", paddingBottom: "3px" }}>
-                    <div style={{ position: "absolute", left: "2px", bottom: "2px", fontSize: "4pt", fontWeight: "bold", textAlign: "left" }}>PREP:<br/>{selectedProduct?.ingresadoPor?.split(' ')[0] || user?.nombreCompleto?.split(' ')[0]}</div>
+                  <div className="label-grid-item" style={{ gridColumn: "span 2", textAlign: "center", borderTop: "none", background: "#f8fafc" }}>
                     <span className="label-cell-title" style={{ fontSize: "5pt" }}>CORRELATIVO ÚNICO</span>
                     <span className="label-cell-value" style={{ fontSize: "7pt", fontWeight: 900 }}>{selectedProduct?.correlativoPrefijo ? `${selectedProduct.correlativoPrefijo}-` : ""}{(selectedProduct?.correlativoInicial || 1) + index}</span>
-                    <div style={{ position: "absolute", right: "2px", bottom: "2px", fontSize: "4pt", fontWeight: "bold", textAlign: "right" }}>CC: _____</div>
                   </div>
                 </div>
               </div>
@@ -1415,15 +1419,17 @@ export default function InventoryPage() {
                         <div className="label-header">HOSPITAL DE CUREPTO<br/>SERVICIO DE FARMACIA</div>
                         <div className="label-med-name">{selectedProduct?.nombreMedicamento}</div>
                         <div className="label-dosage">{distributionForm.posologia}</div>
-                        <div className="label-total-count">Total: {distributionForm.comprimidosPorSobre} comp.</div>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", width: "100%", marginBottom: "1mm" }}>
+                          <div style={{ fontSize: "6pt", fontWeight: "bold", lineHeight: 1 }}>PREP:<br/>{(selectedProduct?.ingresadoPor?.split(' ')[0] || user?.nombreCompleto?.split(' ')[0] || "").substring(0, 10)}</div>
+                          <div className="label-total-count" style={{ margin: 0 }}>Total: {distributionForm.comprimidosPorSobre} comp.</div>
+                          <div style={{ fontSize: "6pt", fontWeight: "bold", lineHeight: 1, textAlign: "right" }}>CC:<br/>____________</div>
+                        </div>
                         <div className="label-grid">
                           <div className="label-grid-item"><span className="label-cell-title">VENC:</span><span className="label-cell-value">{distributionForm.vto}</span></div>
                           <div className="label-grid-item"><span className="label-cell-title">SERIE:</span><span className="label-cell-value">{distributionForm.seri}</span></div>
-                          <div className="label-grid-item" style={{ gridColumn: "span 2", textAlign: "center", borderTop: "none", background: "#f8fafc", position: "relative", paddingBottom: "4px" }}>
-                            <div style={{ position: "absolute", left: "3px", bottom: "3px", fontSize: "6pt", fontWeight: "bold", textAlign: "left" }}>PREP:<br/>{selectedProduct?.ingresadoPor?.split(' ')[0] || user?.nombreCompleto?.split(' ')[0]}</div>
+                          <div className="label-grid-item" style={{ gridColumn: "span 2", textAlign: "center", borderTop: "none", background: "#f8fafc" }}>
                             <span className="label-cell-title" style={{ fontSize: "7pt" }}>CORRELATIVO ÚNICO</span>
                             <span className="label-cell-value" style={{ fontSize: "9pt", fontWeight: 900 }}>{selectedProduct?.correlativoPrefijo ? `${selectedProduct.correlativoPrefijo}-` : ""}{(selectedProduct?.correlativoInicial || 1) + labelIndex}</span>
-                            <div style={{ position: "absolute", right: "3px", bottom: "3px", fontSize: "6pt", fontWeight: "bold", textAlign: "right" }}>CC: _________</div>
                           </div>
                         </div>
                       </div>
