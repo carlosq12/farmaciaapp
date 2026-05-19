@@ -13,7 +13,19 @@ export default function Login() {
   const [error, setError] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [particles, setParticles] = useState<{id: number, left: string, width: string, duration: string, delay: string}[]>([]);
   const { login } = useAuth();
+
+  React.useEffect(() => {
+    const newParticles = Array.from({ length: 25 }).map((_, i) => ({
+      id: i,
+      left: `${Math.random() * 100}%`,
+      width: `${Math.random() * 8 + 3}px`,
+      duration: `${Math.random() * 15 + 10}s`,
+      delay: `${Math.random() * 15}s`
+    }));
+    setParticles(newParticles);
+  }, []);
 
   const formatRut = (value: string) => {
     if (value.toUpperCase() === "ADMIN") return "ADMIN";
@@ -93,22 +105,68 @@ export default function Login() {
 
 
   return (
-    <div style={{
-      minHeight: "100vh",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      background: "#f1f5f9"
-    }}>
-      <div style={{
-        background: "white",
-        padding: "3rem",
-        borderRadius: "24px",
-        boxShadow: "0 10px 40px rgba(0,0,0,0.08)",
-        width: "100%",
-        maxWidth: "420px",
-        animation: "fadeIn 0.5s ease-out"
+    <>
+      <style>{`
+        @keyframes pulseGlow {
+          0% { box-shadow: 0 0 20px rgba(194, 24, 91, 0.05), 0 10px 40px rgba(0,0,0,0.08); }
+          50% { box-shadow: 0 0 45px rgba(194, 24, 91, 0.25), 0 15px 50px rgba(0,0,0,0.1); }
+          100% { box-shadow: 0 0 20px rgba(194, 24, 91, 0.05), 0 10px 40px rgba(0,0,0,0.08); }
+        }
+        @keyframes floatingBg {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        @keyframes floatParticle {
+          0% { transform: translateY(0) scale(1); opacity: 0; }
+          20% { opacity: 0.6; }
+          80% { opacity: 0.6; }
+          100% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
+        }
+        .login-bg {
+          background: linear-gradient(-45deg, #f8fafc, #fdf2f8, #f1f5f9, #fce4ec);
+          background-size: 400% 400%;
+          animation: floatingBg 15s ease infinite;
+          position: relative;
+          overflow: hidden;
+        }
+        .particle {
+          position: absolute;
+          bottom: -20px;
+          background: rgba(194, 24, 91, 0.4);
+          border-radius: 50%;
+          pointer-events: none;
+          box-shadow: 0 0 10px rgba(194, 24, 91, 0.6);
+        }
+        .login-card {
+          animation: pulseGlow 4s ease-in-out infinite, fadeIn 0.8s ease-out;
+          border: 1px solid rgba(194, 24, 91, 0.15);
+          backdrop-filter: blur(10px);
+          z-index: 10;
+        }
+      `}</style>
+      <div className="login-bg" style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}>
+        {particles.map(p => (
+          <div key={p.id} className="particle" style={{
+            left: p.left,
+            width: p.width,
+            height: p.width,
+            animation: `floatParticle ${p.duration} linear infinite`,
+            animationDelay: p.delay
+          }} />
+        ))}
+        <div className="login-card" style={{
+          background: "rgba(255, 255, 255, 0.95)",
+          padding: "3rem",
+          borderRadius: "24px",
+          width: "100%",
+          maxWidth: "420px",
+        }}>
         <div style={{ textAlign: "center", marginBottom: "2rem" }}>
           <div style={{
             width: "64px",
@@ -232,5 +290,6 @@ export default function Login() {
         </form>
       </div>
     </div>
+    </>
   );
 }

@@ -1219,11 +1219,13 @@ export default function InventoryPage() {
                             <div className="label-grid-item"><span className="label-cell-title">SERIE:</span><span className="label-cell-value">{distributionForm.seri}</span></div>
                             <div className="label-grid-item"><span className="label-cell-title">ISP:</span><span className="label-cell-value">{distributionForm.regIsp}</span></div>
                             <div className="label-grid-item"><span className="label-cell-title">N° BOL:</span><span className="label-cell-value">{index + 1}/{array.length}</span></div>
-                            <div className="label-grid-item" style={{ gridColumn: "span 2", textAlign: "center", borderTop: "none", background: "#f8fafc" }}>
+                            <div className="label-grid-item" style={{ gridColumn: "span 2", textAlign: "center", borderTop: "none", background: "#f8fafc", position: "relative", paddingBottom: "3px" }}>
+                              <div style={{ position: "absolute", left: "2px", bottom: "2px", fontSize: "4pt", fontWeight: "bold", textAlign: "left" }}>PREP:<br/>{selectedProduct?.ingresadoPor?.split(' ')[0] || user?.nombreCompleto?.split(' ')[0]}</div>
                               <span className="label-cell-title" style={{ fontSize: "5pt" }}>CORRELATIVO ÚNICO</span>
                               <span className="label-cell-value" style={{ fontSize: "7pt", fontWeight: 900 }}>
                                 {(selectedProduct?.correlativoInicial) ? `M-${selectedProduct.correlativoInicial + index}` : (nextCorrelativo ? `M-${nextCorrelativo + index}` : "CARGANDO...")}
                               </span>
+                              <div style={{ position: "absolute", right: "2px", bottom: "2px", fontSize: "4pt", fontWeight: "bold", textAlign: "right" }}>CC: _____</div>
                             </div>
                           </div>
                         </div>
@@ -1391,9 +1393,11 @@ export default function InventoryPage() {
                 <div className="label-grid">
                   <div className="label-grid-item"><span className="label-cell-title">VENC:</span><span className="label-cell-value">{distributionForm.vto}</span></div>
                   <div className="label-grid-item"><span className="label-cell-title">SERIE:</span><span className="label-cell-value">{distributionForm.seri}</span></div>
-                  <div className="label-grid-item" style={{ gridColumn: "span 2", textAlign: "center" }}>
-                    <span className="label-cell-title">CORRELATIVO ÚNICO</span>
-                    <span className="label-cell-value" style={{ fontWeight: 900 }}>{selectedProduct?.correlativoPrefijo ? `${selectedProduct.correlativoPrefijo}-` : ""}{(selectedProduct?.correlativoInicial || 1) + index}</span>
+                  <div className="label-grid-item" style={{ gridColumn: "span 2", textAlign: "center", borderTop: "none", background: "#f8fafc", position: "relative", paddingBottom: "3px" }}>
+                    <div style={{ position: "absolute", left: "2px", bottom: "2px", fontSize: "4pt", fontWeight: "bold", textAlign: "left" }}>PREP:<br/>{selectedProduct?.ingresadoPor?.split(' ')[0] || user?.nombreCompleto?.split(' ')[0]}</div>
+                    <span className="label-cell-title" style={{ fontSize: "5pt" }}>CORRELATIVO ÚNICO</span>
+                    <span className="label-cell-value" style={{ fontSize: "7pt", fontWeight: 900 }}>{selectedProduct?.correlativoPrefijo ? `${selectedProduct.correlativoPrefijo}-` : ""}{(selectedProduct?.correlativoInicial || 1) + index}</span>
+                    <div style={{ position: "absolute", right: "2px", bottom: "2px", fontSize: "4pt", fontWeight: "bold", textAlign: "right" }}>CC: _____</div>
                   </div>
                 </div>
               </div>
@@ -1415,9 +1419,11 @@ export default function InventoryPage() {
                         <div className="label-grid">
                           <div className="label-grid-item"><span className="label-cell-title">VENC:</span><span className="label-cell-value">{distributionForm.vto}</span></div>
                           <div className="label-grid-item"><span className="label-cell-title">SERIE:</span><span className="label-cell-value">{distributionForm.seri}</span></div>
-                          <div className="label-grid-item" style={{ gridColumn: "span 2", textAlign: "center" }}>
-                            <span className="label-cell-title">CORRELATIVO ÚNICO</span>
-                            <span className="label-cell-value" style={{ fontWeight: 900 }}>{selectedProduct?.correlativoPrefijo ? `${selectedProduct.correlativoPrefijo}-` : ""}{(selectedProduct?.correlativoInicial || 1) + labelIndex}</span>
+                          <div className="label-grid-item" style={{ gridColumn: "span 2", textAlign: "center", borderTop: "none", background: "#f8fafc", position: "relative", paddingBottom: "4px" }}>
+                            <div style={{ position: "absolute", left: "3px", bottom: "3px", fontSize: "6pt", fontWeight: "bold", textAlign: "left" }}>PREP:<br/>{selectedProduct?.ingresadoPor?.split(' ')[0] || user?.nombreCompleto?.split(' ')[0]}</div>
+                            <span className="label-cell-title" style={{ fontSize: "7pt" }}>CORRELATIVO ÚNICO</span>
+                            <span className="label-cell-value" style={{ fontSize: "9pt", fontWeight: 900 }}>{selectedProduct?.correlativoPrefijo ? `${selectedProduct.correlativoPrefijo}-` : ""}{(selectedProduct?.correlativoInicial || 1) + labelIndex}</span>
+                            <div style={{ position: "absolute", right: "3px", bottom: "3px", fontSize: "6pt", fontWeight: "bold", textAlign: "right" }}>CC: _________</div>
                           </div>
                         </div>
                       </div>
